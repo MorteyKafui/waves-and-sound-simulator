@@ -1,0 +1,144 @@
+.speed-lab {
+  container-type: inline-size;
+  min-width: 0;
+  width: 100%;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.speed-lab *, .speed-lab *::before, .speed-lab *::after { box-sizing: border-box; }
+.speed-workspace, .speed-main-column, .speed-grid > *, .speed-heading > div { min-width: 0; }
+.speed-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+.speed-heading > div { flex: 1 1 420px; }
+.speed-heading h2 { margin: 9px 0 7px; font-size: clamp(24px, 3vw, 32px); font-weight: 580; line-height: 1.2; letter-spacing: -0.8px; overflow-wrap: anywhere; }
+.speed-heading p { max-width: 75ch; margin: 0; color: var(--lab-secondary); font-size: 14px; }
+.speed-topic-badge, .speed-kicker { color: var(--lab-accent); font: 12px/1.5 var(--font-mono, monospace); letter-spacing: 0.07em; }
+.speed-topic-badge { display: inline-block; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; background: color-mix(in srgb, var(--lab-accent) 5%, var(--surface)); }
+.speed-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+.speed-main-column { display: flex; flex-direction: column; gap: 18px; }
+.speed-card { min-width: 0; margin: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.speed-card-heading { padding: 19px 20px 17px; border-bottom: 1px solid var(--line); }
+.speed-card h3 { margin: 5px 0 0; font-size: 17px; font-weight: 600; line-height: 1.4; letter-spacing: -0.3px; }
+.speed-controls-body { display: flex; flex-direction: column; gap: 20px; padding: 20px; }
+.speed-field, .speed-choice-field, .speed-preset-group { min-width: 0; }
+.speed-field-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 3px 8px; margin-bottom: 7px; font-size: 13px; font-weight: 600; line-height: 1.6; }
+.speed-field-label > span { color: var(--lab-secondary); font-size: 12px; font-weight: 400; overflow-wrap: anywhere; }
+.speed-number-control { display: flex; min-width: 0; width: 100%; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--surface); }
+.speed-number-control:focus-within { border-color: var(--lab-accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--lab-accent) 15%, transparent); }
+.speed-number { display: block; flex: 1 1 0; width: 0; min-width: 0; min-height: 46px; padding: 9px 5px; border: 0; border-radius: 0; background: transparent; color: var(--ink); text-align: center; font: 16px/1.5 var(--font-mono, monospace); appearance: textfield; }
+.speed-number::-webkit-inner-spin-button, .speed-number::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.speed-number:focus { outline: none; }
+.speed-number[aria-invalid="true"] { background: color-mix(in srgb, var(--ink) 6%, var(--surface)); }
+.speed-stepper { display: grid; place-items: center; flex: 0 0 44px; width: 44px; min-height: 46px; padding: 0; border: 0; background: color-mix(in srgb, var(--lab-accent) 4%, var(--surface)); color: var(--lab-accent); font: 22px/1 var(--font-mono, monospace); cursor: pointer; }
+.speed-stepper:first-child { border-right: 1px solid var(--line); }
+.speed-stepper:last-child { border-left: 1px solid var(--line); }
+.speed-stepper:hover { background: color-mix(in srgb, var(--lab-accent) 12%, var(--surface)); }
+.speed-field-hint { margin: 6px 0 0; color: var(--lab-secondary); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.speed-field-error { color: var(--ink); font-weight: 550; }
+.speed-control-label { display: block; margin-bottom: 8px; color: var(--lab-secondary); font-size: 12px; font-weight: 550; }
+.speed-choices { display: flex; flex-wrap: wrap; gap: 5px; padding: 4px; border: 1px solid var(--line); border-radius: 7px; background: color-mix(in srgb, var(--ink) 3%, var(--surface)); }
+.speed-choice { flex: 1 1 75px; min-width: 0; min-height: 44px; padding: 8px 9px; border: 1px solid transparent; border-radius: 4px; color: var(--lab-secondary); background: transparent; font-size: 12px; line-height: 1.5; font-weight: 550; cursor: pointer; overflow-wrap: anywhere; }
+.speed-choice[aria-pressed="true"] { border-color: color-mix(in srgb, var(--lab-accent) 30%, var(--line)); background: var(--surface); color: var(--lab-accent); box-shadow: 0 1px 3px color-mix(in srgb, var(--ink) 5%, transparent); }
+.speed-choice:hover { color: var(--ink); }
+.speed-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-width: 44px; min-height: 44px; max-width: 100%; padding: 10px 13px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font-size: 12px; line-height: 1.6; font-weight: 550; cursor: pointer; overflow-wrap: anywhere; }
+.speed-button:hover { border-color: var(--lab-accent); color: var(--lab-accent); }
+.speed-button:disabled { opacity: 0.5; cursor: not-allowed; }
+.speed-reset { flex-shrink: 0; }
+.speed-reset > span { color: var(--lab-accent); font-size: 19px; line-height: 1; }
+.speed-presets { display: flex; flex-wrap: wrap; gap: 7px; }
+.speed-presets > .speed-button { flex: 1 1 90px; }
+.speed-control-note { margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: color-mix(in srgb, var(--lab-accent) 4%, var(--surface)); color: var(--lab-secondary); font-size: 12px; line-height: 1.75; overflow-wrap: anywhere; }
+.speed-control-divider { height: 1px; background: var(--line); }
+.speed-lab button:focus-visible, .speed-phase-range:focus-visible { outline: 2px solid var(--lab-accent); outline-offset: 3px; }
+
+.speed-figure { background: color-mix(in srgb, var(--lab-accent) 3%, var(--surface)); }
+.speed-figure-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 5px 12px; padding: 17px 20px 0; }
+.speed-figure-top .speed-kicker { color: var(--lab-secondary); letter-spacing: 0.04em; }
+.speed-figure-state { color: var(--lab-accent); font-size: 12px; }
+.speed-bench { display: block; width: 100%; height: auto; max-height: 340px; margin: 0 auto; overflow: visible; }
+.speed-bench-shadow { fill: var(--ink); opacity: 0.07; }
+.speed-solid {
+  --speed-top: color-mix(in srgb, var(--ink) 9%, var(--surface));
+  --speed-side: color-mix(in srgb, var(--ink) 22%, var(--surface));
+  --speed-edge: color-mix(in srgb, var(--ink) 36%, var(--surface));
+}
+.speed-solid-base { --speed-top: color-mix(in srgb, var(--ink) 7%, var(--surface)); --speed-side: color-mix(in srgb, var(--ink) 18%, var(--surface)); }
+.speed-solid-paper { --speed-top: var(--surface); --speed-side: color-mix(in srgb, var(--ink) 7%, var(--surface)); --speed-edge: var(--line); }
+.speed-solid-cursor { --speed-top: color-mix(in srgb, var(--lab-accent) 48%, var(--surface)); --speed-side: color-mix(in srgb, var(--lab-accent) 65%, var(--surface)); --speed-edge: var(--lab-accent); }
+.speed-solid-fill { fill: var(--speed-side); }
+.speed-solid-top { fill: var(--speed-top); }
+.speed-shade-0 { fill: var(--speed-side); }
+.speed-shade-1 { fill: color-mix(in srgb, var(--speed-side) 80%, var(--speed-top)); }
+.speed-shade-2 { fill: color-mix(in srgb, var(--speed-side) 55%, var(--speed-top)); }
+.speed-shade-3 { fill: color-mix(in srgb, var(--speed-side) 30%, var(--speed-top)); }
+.speed-solid-edge { fill: none; stroke: var(--speed-edge); stroke-width: 0.65px; stroke-linejoin: round; }
+.speed-solid-bevel { fill: none; stroke: var(--surface); stroke-width: 0.6px; opacity: 0.7; }
+.speed-bench-groove { fill: none; stroke: var(--line); stroke-width: 0.8px; }
+.speed-screw { fill: none; stroke: var(--lab-secondary); stroke-width: 0.6px; }
+.speed-screw-dot { fill: var(--lab-secondary); }
+.speed-tick { fill: none; stroke: var(--lab-secondary); stroke-width: 0.6px; opacity: 0.65; }
+.speed-major-tick { fill: none; stroke: var(--lab-secondary); stroke-width: 0.8px; }
+.speed-trace-axis { fill: none; stroke: var(--line); stroke-width: 0.8px; }
+.speed-trace { fill: none; stroke: var(--lab-accent); stroke-width: 2.2px; stroke-linecap: round; stroke-linejoin: round; }
+.speed-particle { fill: var(--lab-secondary); }
+.speed-tracked-particle { fill: var(--lab-accent); stroke: var(--surface); stroke-width: 1px; }
+.speed-knurl { fill: none; stroke: var(--lab-secondary); stroke-width: 0.5px; }
+.speed-cursor-mark { fill: none; stroke: var(--lab-accent); stroke-width: 1.3px; }
+.speed-figure-scale { min-height: 39px; padding: 0 20px 13px; color: var(--lab-secondary); text-align: center; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+.speed-figure-scale strong { color: var(--ink); font-weight: 550; }
+.speed-snapshot-controls { display: grid; gap: 8px; padding: 15px 20px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.speed-snapshot-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 3px 10px; font-size: 12px; color: var(--lab-secondary); }
+.speed-snapshot-heading output { color: var(--ink); font-family: var(--font-mono, monospace); overflow-wrap: anywhere; }
+.speed-phase-range { display: block; appearance: none; min-width: 0; width: 100%; min-height: 44px; margin: 0; background: transparent; accent-color: var(--lab-accent); cursor: pointer; }
+.speed-phase-range::-webkit-slider-runnable-track { height:4px; background:var(--line); }
+.speed-phase-range::-webkit-slider-thumb { appearance:none; width:22px; height:22px; margin-top:-9px; border:3px solid var(--lab-accent); border-radius:50%; background:var(--surface); }
+.speed-phase-range::-moz-range-track { height:4px; background:var(--line); }
+.speed-phase-range::-moz-range-thumb { width:16px; height:16px; border:3px solid var(--lab-accent); border-radius:50%; background:var(--surface); }
+.speed-phase-range:disabled { cursor: not-allowed; }
+.speed-advance { justify-self: start; background: transparent; }
+.speed-advance > span { color: var(--lab-accent); }
+.speed-figure-caption { padding: 14px 20px 17px; border-top: 1px solid var(--line); color: var(--lab-secondary); font-size: 12px; line-height: 1.75; }
+
+.speed-result-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 5px 20px; padding: 18px 20px; }
+.speed-result { display: flex; align-items: baseline; flex-wrap: wrap; gap: 9px; min-width: 0; color: var(--lab-accent); font: 550 clamp(30px, 4vw, 42px)/1.3 var(--font-mono, monospace); letter-spacing: -1.2px; overflow-wrap: anywhere; }
+.speed-result > span { color: var(--lab-secondary); font-size: 14px; font-weight: 400; letter-spacing: 0; }
+.speed-calculation { padding: 15px 20px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--lab-accent) 3%, var(--surface)); }
+.speed-formula { margin: 0; font: 14px/1.8 var(--font-mono, monospace); color: var(--ink); overflow-wrap: anywhere; }
+.speed-substitution { margin: 7px 0 0; color: var(--lab-secondary); font: 12px/1.9 var(--font-mono, monospace); overflow-wrap: anywhere; }
+.speed-error { margin: 7px 0 0; color: var(--ink); font-size: 13px; line-height: 1.75; }
+.speed-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr)); margin: 0; border-top: 1px solid var(--line); }
+.speed-metric { min-width: 0; padding: 16px 20px; border-left: 1px solid var(--line); }
+.speed-metric:first-child { border-left: 0; }
+.speed-metric dt { color: var(--lab-secondary); font-size: 12px; }
+.speed-metric dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px; margin: 6px 0 0; color: var(--ink); font: 500 19px/1.6 var(--font-mono, monospace); overflow-wrap: anywhere; }
+.speed-metric dd > span { color: var(--lab-secondary); font-size: 12px; font-weight: 400; }
+.speed-metric p { margin: 4px 0 0; color: var(--lab-secondary); font-size: 12px; line-height: 1.7; }
+.speed-notes { padding: 18px 20px 20px; }
+.speed-notes-body { display: grid; gap: 10px; margin-top: 12px; }
+.speed-notes-body p { margin: 0; color: var(--lab-secondary); font-size: 13px; line-height: 1.85; overflow-wrap: anywhere; }
+.speed-notes-body strong { color: var(--ink); font-weight: 600; }
+
+@container (min-width: 840px) {
+  .speed-grid { grid-template-columns: minmax(0, 1fr) minmax(280px, 0.5fr); }
+  .speed-controls { position: sticky; top: 18px; }
+}
+
+@container (max-width: 420px) {
+  .speed-heading { gap: 14px; }
+  .speed-heading h2 { font-size: 25px; }
+  .speed-card-heading, .speed-controls-body, .speed-notes { padding: 16px; }
+  .speed-figure-top { padding: 14px 14px 0; }
+  .speed-figure-scale { padding: 0 14px 12px; text-align: left; }
+  .speed-snapshot-controls, .speed-figure-caption, .speed-result-heading, .speed-calculation { padding: 14px; }
+  .speed-result-heading { align-items: start; flex-direction: column; }
+  .speed-result { font-size: 32px; }
+  .speed-metric { padding: 13px 14px; border-left: 0; border-top: 1px solid var(--line); }
+  .speed-metric:first-child { border-top: 0; }
+  .speed-reset { width: 100%; justify-content: space-between; }
+  .speed-advance { width: 100%; justify-content: space-between; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .speed-lab *, .speed-lab *::before, .speed-lab *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

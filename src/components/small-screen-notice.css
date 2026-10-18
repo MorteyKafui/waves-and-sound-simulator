@@ -1,0 +1,46 @@
+.small-screen-dialog {
+  width: min(460px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  gap: 0;
+  padding: clamp(24px, 6vw, 36px);
+  border: 1px solid var(--line);
+  background: var(--popover);
+  color: var(--ink);
+  box-shadow: 0 24px 90px color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.small-screen-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--lab-secondary);
+}
+.small-screen-close:hover { background: var(--soft); }
+.small-screen-art { position: relative; height: 130px; margin: 6px auto 24px; width: 205px; color: var(--lab-accent); }
+.small-screen-monitor {
+  position: absolute;
+  inset: 9px 23px 26px 5px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--lab-accent);
+  background: color-mix(in srgb, var(--lab-accent) 6%, var(--popover));
+  box-shadow: inset 0 0 0 6px var(--popover);
+}
+.small-screen-monitor::after { content: ""; position: absolute; width: 72px; height: 2px; background: var(--lab-accent); bottom: -21px; left: 50%; transform: translateX(-50%); }
+.small-screen-monitor > span { position: absolute; width: 2px; height: 19px; background: var(--lab-accent); bottom: -19px; left: 50%; }
+.small-screen-phone { position: absolute; right: 3px; bottom: 7px; width: 47px; height: 78px; display: grid; place-items: center; border: 2px solid var(--lab-accent); background: var(--popover); box-shadow: 0 0 0 6px var(--popover); }
+.small-screen-phone > span { position: absolute; bottom: 5px; width: 15px; height: 2px; background: var(--line); }
+.small-screen-spark { position: absolute; right: 0; top: 0; font-size: 22px; }
+.small-screen-eyebrow { font: 10px/1.7 var(--font-mono); letter-spacing: .08em; color: var(--lab-accent); }
+.small-screen-dialog .small-screen-title { margin: 10px 0 14px; font: 550 clamp(26px, 7vw, 34px)/1.16 var(--font-heading); letter-spacing: -.9px; }
+.small-screen-dialog .small-screen-description { margin: 0; color: var(--lab-secondary); font: 13px/1.85 var(--font-mono); }
+.small-screen-continue { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 48px; margin-top: 25px; padding: 13px 16px; background: var(--lab-accent); color: var(--primary-foreground); font-size: 13px; line-height: 1.5; font-weight: 600; text-align: left; }
+.small-screen-continue:hover { background: var(--lab-accent-dark); }
+.small-screen-note { margin: 12px 0 0; color: var(--lab-secondary); font-size: 11px; line-height: 1.7; text-align: center; }
+@media (max-height: 620px) { .small-screen-art { display: none; } .small-screen-eyebrow { padding-right: 20px; } }
+@media (prefers-reduced-motion: reduce) { .small-screen-dialog { animation: none !important; transition: none !important; } }

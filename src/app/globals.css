@@ -1,0 +1,177 @@
+@import "tailwindcss" source("../");
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/jetbrains-mono";
+@import "../components/iso/iso.css";
+@import "./lab.css";
+@import "../components/wave-speed-lab.css";
+@import "../components/doppler-lab.css";
+@import "../components/small-screen-notice.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: "Bricolage Grotesque Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+  --font-sans: "JetBrains Mono Variable", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+}
+
+:root {
+  --font-heading: "Bricolage Grotesque Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+  --font-sans: "JetBrains Mono Variable", monospace;
+  color-scheme: light;
+  --radius: 0;
+  --palette-cream: #f2e8dc;
+  --palette-charcoal: #393835;
+  --palette-surface: #41403c;
+  --background: var(--palette-cream);
+  --foreground: var(--palette-charcoal);
+  --card: color-mix(in srgb, var(--palette-cream) 97%, var(--palette-surface));
+  --card-foreground: var(--foreground);
+  --popover: var(--palette-cream);
+  --popover-foreground: var(--foreground);
+  --primary: var(--palette-charcoal);
+  --primary-foreground: var(--palette-cream);
+  --secondary: color-mix(in srgb, var(--palette-cream) 90%, var(--palette-surface));
+  --secondary-foreground: var(--foreground);
+  --muted: color-mix(in srgb, var(--palette-cream) 94%, var(--palette-surface));
+  --muted-foreground: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --accent: color-mix(in srgb, var(--palette-cream) 86%, var(--palette-surface));
+  --accent-foreground: var(--foreground);
+  --destructive: var(--foreground);
+  --border: color-mix(in srgb, var(--foreground) 20%, transparent);
+  --input: color-mix(in srgb, var(--foreground) 35%, transparent);
+  --ring: color-mix(in srgb, var(--foreground) 70%, transparent);
+  --sidebar: color-mix(in srgb, var(--palette-cream) 94%, var(--palette-surface));
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  --page: var(--background);
+  --surface: var(--card);
+  --ink: var(--foreground);
+  --line: var(--border);
+  --line-soft: color-mix(in srgb, var(--border) 60%, transparent);
+  --lab-sidebar: var(--sidebar);
+  --lab-muted: var(--muted-foreground);
+  --lab-secondary: color-mix(in srgb, var(--foreground) 86%, var(--background));
+  --lab-accent: var(--primary);
+  --lab-accent-dark: var(--primary);
+  --lab-accent-pale: var(--accent);
+  --soft: color-mix(in srgb, var(--muted) 68%, transparent);
+  --scene: color-mix(in srgb, var(--palette-cream) 96%, var(--palette-surface));
+}
+
+.dark {
+  color-scheme: dark;
+  --background: var(--palette-charcoal);
+  --foreground: var(--palette-cream);
+  --card: var(--palette-surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--palette-surface);
+  --popover-foreground: var(--foreground);
+  --primary: var(--palette-cream);
+  --primary-foreground: var(--palette-charcoal);
+  --secondary: color-mix(in srgb, var(--palette-surface) 92%, var(--palette-cream));
+  --secondary-foreground: var(--foreground);
+  --muted: var(--palette-surface);
+  --muted-foreground: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --accent: color-mix(in srgb, var(--palette-surface) 84%, var(--palette-cream));
+  --accent-foreground: var(--foreground);
+  --destructive: var(--foreground);
+  --border: color-mix(in srgb, var(--foreground) 20%, transparent);
+  --input: color-mix(in srgb, var(--foreground) 35%, transparent);
+  --ring: color-mix(in srgb, var(--foreground) 70%, transparent);
+  --sidebar: var(--palette-surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  --lab-secondary: color-mix(in srgb, var(--foreground) 86%, var(--background));
+  --lab-accent-dark: var(--primary);
+  --scene: var(--palette-charcoal);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body { @apply m-0 bg-background font-mono text-foreground antialiased; }
+  button, input, textarea, select { font-family: inherit; }
+  button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+  button:not(:disabled), [role="tab"], summary { cursor: pointer; }
+  button, a, input, textarea, select, [tabindex] { outline-offset: 4px; }
+  :focus-visible { outline: 2px solid var(--ring); }
+  h1, h2, h3, h4, h5, h6, .brand, [data-slot="card-title"], [data-slot="dialog-title"] { @apply font-heading; }
+  svg { flex-shrink: 0; }
+  a { color: inherit; text-decoration: none; }
+}
+
+@layer components {
+  .app-shell { @apply relative isolate flex min-h-dvh bg-background font-mono text-foreground; }
+  .app-shell::before, .app-shell::after { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; transition:opacity 700ms ease; }
+  .app-shell::before { opacity:1; background:radial-gradient(ellipse at 16% 4%, color-mix(in srgb, var(--palette-surface) 4%, transparent) 0%, transparent 48%), radial-gradient(ellipse at 95% 18%, color-mix(in srgb, var(--palette-charcoal) 3%, transparent) 0%, transparent 48%), radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--palette-surface) 3%, transparent) 0%, transparent 52%); }
+  .app-shell::after { opacity:0; background:radial-gradient(ellipse at 10% 0%, color-mix(in srgb, var(--palette-cream) 3%, transparent) 0%, transparent 52%), radial-gradient(ellipse at 97% 25%, color-mix(in srgb, var(--palette-surface) 45%, transparent) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--palette-cream) 2%, transparent) 0%, transparent 55%); }
+  .dark .app-shell::before { opacity:0; }
+  .dark .app-shell::after { opacity:1; }
+  .sidebar, .topbar { backdrop-filter:blur(18px); }
+  .topbar { background:color-mix(in srgb, var(--background) 46%, transparent); }
+  .app-shell .simulation-card { background:radial-gradient(ellipse at 85% 0%, color-mix(in srgb, var(--foreground) 3%, transparent), transparent 65%), var(--scene); }
+  .speed-card, .speed-button, .speed-choices, .speed-choice, .speed-number-control, .doppler-figure, .doppler-results, .doppler-controls, .doppler-case-picker button { border-radius:0; }
+  .app-shell .simulation-card, .app-shell .controls-card, .app-shell .measurement-strip, .app-shell .investigation-card, .app-shell .theory-card, .app-shell .experiment-tabs, .app-shell .experiment-tabs button, .app-shell .mode-switch, .app-shell .mode-switch button, .app-shell .curiosity-card, .app-shell .guide-intro, .app-shell .guide-model, .app-shell .guide-experiment, .app-shell .observation-card, .app-shell .notebook-summary { @apply rounded-none; }
+  .app-shell .scene-view-controls, .app-shell .scene-view-controls button, .app-shell .range-heading output, .app-shell .preset-row button, .app-shell .question, .app-shell .equation, .app-shell .water-badge { @apply rounded-none; }
+  .range-control [data-slot="slider"] { @apply py-1; }
+  .range-control [data-slot="slider-thumb"] { @apply border-2 border-primary bg-background; }
+  .range-heading { min-height:29px; }
+  .range-heading label { cursor:pointer; }
+  .footer-credit { color:var(--lab-secondary); font-size:9px; letter-spacing:0; text-transform:none; }
+  .app-footer { flex-wrap:wrap; }
+  .help-dialog { @apply rounded-none; }
+  .mode-switch [data-slot="button"] { @apply h-auto rounded-none; }
+  .controls-title { font-family:var(--font-heading); }
+  @media (max-width:720px) {
+    .app-shell { display:block; }
+    .app-footer>span:last-child { display:block; font:8px var(--font-mono); letter-spacing:0; }
+    .app-footer { justify-content:center; text-align:center; row-gap:12px; }
+    .footer-credit { flex-basis:100%; }
+    .page-intro p { font-size:11px; }
+    .investigation-card p, .theory-card p, .question { font-size:11px; }
+  }
+}

@@ -1,0 +1,123 @@
+/* Imported by the parent alongside the laboratory's global styles. */
+.doppler-lab {
+  --doppler-top: color-mix(in srgb, var(--surface) 92%, var(--ink));
+  --doppler-front: color-mix(in srgb, var(--surface) 76%, var(--lab-secondary));
+  --doppler-side: color-mix(in srgb, var(--surface) 57%, var(--lab-secondary));
+  --doppler-edge: color-mix(in srgb, var(--lab-secondary) 65%, var(--line));
+  --doppler-soft: color-mix(in srgb, var(--lab-accent) 6%, var(--surface));
+  container-type: inline-size;
+  width: 100%;
+  min-width: 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.doppler-lab *, .doppler-lab *::before, .doppler-lab *::after { box-sizing: border-box; }
+.doppler-lab h2, .doppler-lab h3, .doppler-lab h4, .doppler-lab p, .doppler-lab dl, .doppler-lab dd, .doppler-lab figure { margin: 0; }
+.doppler-lab button, .doppler-lab input { font: inherit; }
+.doppler-lab button:focus-visible, .doppler-lab input:focus-visible { outline: 2px solid var(--lab-accent); outline-offset: 3px; }
+.doppler-lab button { cursor: pointer; }
+.doppler-intro { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.doppler-intro > div { flex: 1 1 380px; min-width: 0; }
+.doppler-lab .doppler-kicker { color: var(--lab-accent); font-size: 12px; font-weight: 600; letter-spacing: .07em; }
+.doppler-lab .doppler-intro h2 { margin: 7px 0 10px; font-size: clamp(25px, 4cqi, 38px); font-weight: 550; line-height: 1.16; letter-spacing: -.045em; }
+.doppler-intro > div > p:last-child { max-width: 75ch; color: var(--lab-secondary); }
+.doppler-domain-badge { padding: 7px 11px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--lab-secondary); font-size: 12px; }
+.doppler-case-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 8px; }
+.doppler-case-picker button { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 54px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 11px 12px; color: var(--lab-secondary); font-size: 13px; line-height: 1.5; text-align: left; }
+.doppler-case-picker button > span { flex-shrink: 0; font-size: 12px; opacity: .75; }
+.doppler-case-picker button:hover { border-color: var(--lab-accent); }
+.doppler-case-picker button[aria-pressed="true"] { border-color: var(--lab-accent); background: color-mix(in srgb, var(--lab-accent) 10%, var(--surface)); box-shadow: inset 0 0 0 1px var(--lab-accent); color: var(--ink); font-weight: 600; }
+.doppler-lab .doppler-case-description { margin: 12px 0; color: var(--lab-secondary); font-size: 13px; }
+.doppler-lab .doppler-axis-note { border-left: 3px solid var(--lab-accent); border-radius: 0 5px 5px 0; padding: 12px 14px; background: var(--doppler-soft); font-size: 13px; }
+.doppler-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; margin-top: 20px; align-items: start; }
+.doppler-visual-column, .doppler-controls, .doppler-formula-panel, .doppler-learning-notes { min-width: 0; }
+.doppler-figure, .doppler-results, .doppler-controls { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.doppler-figure { overflow: hidden; }
+.doppler-figure-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; padding: 16px 18px 0; }
+.doppler-lab .doppler-figure-heading h3 { font-size: 14px; font-weight: 550; letter-spacing: -.01em; }
+.doppler-bench { display: block; width: 100%; height: auto; aspect-ratio: 720 / 316; overflow: hidden; }
+.doppler-bench-shadow { fill: var(--ink); opacity: .07; }
+.doppler-wavefront { fill: none; stroke: var(--lab-accent); stroke-width: 1.6; }
+.doppler-emission-mark { fill: var(--lab-accent); opacity: .55; }
+.doppler-solid { stroke: var(--doppler-edge); stroke-width: .75; stroke-linejoin: round; }
+.doppler-solid-top { fill: var(--doppler-top); }
+.doppler-solid-front { fill: var(--doppler-front); }
+.doppler-solid-side { fill: var(--doppler-side); }
+.doppler-solid .doppler-solid-bevel { fill: none; stroke: var(--surface); opacity: .7; }
+.doppler-fastener circle { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .75; }
+.doppler-fastener path { stroke: var(--lab-secondary); stroke-width: .8; }
+.doppler-speaker-face, .doppler-microphone-grille { fill: var(--doppler-side); stroke: var(--doppler-edge); stroke-width: 1; }
+.doppler-speaker-rim { fill: var(--doppler-front); stroke: var(--lab-secondary); stroke-width: 1; }
+.doppler-speaker-cone { fill: color-mix(in srgb, var(--lab-accent) 24%, var(--surface)); stroke: var(--lab-accent); stroke-width: 1; }
+.doppler-speaker-dustcap { fill: var(--lab-accent); stroke: var(--surface); stroke-width: .5; }
+.doppler-grille-slot { fill: none; stroke: var(--ink); stroke-width: 1; stroke-linecap: round; opacity: .7; }
+.doppler-microphone-port { fill: var(--ink); }
+.doppler-ruler { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .7; }
+.doppler-ruler-tick { fill: none; stroke: var(--lab-secondary); stroke-width: .7; }
+.doppler-instrument-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 18px 15px; }
+.doppler-instrument-legend p { min-width: 0; font-size: 12px; }
+.doppler-instrument-legend strong, .doppler-instrument-legend span { display: block; }
+.doppler-instrument-legend strong { font-weight: 600; }
+.doppler-instrument-legend span { color: var(--lab-secondary); }
+.doppler-figure-caption { display: grid; gap: 7px; border-top: 1px solid var(--line); background: var(--doppler-soft); padding: 14px 18px; color: var(--lab-secondary); font-size: 12px; line-height: 1.75; }
+.doppler-figure-caption strong { color: var(--ink); font-weight: 550; }
+.doppler-legend-key { display: inline-block; width: 15px; height: 3px; margin: 0 8px 3px 0; border-radius: 2px; background: var(--lab-accent); vertical-align: middle; }
+.doppler-results { margin-top: 16px; padding: 16px 18px; }
+.doppler-results-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 14px; margin-bottom: 15px; }
+.doppler-lab .doppler-results-heading h3, .doppler-lab .doppler-controls-heading h3 { font-size: 16px; font-weight: 570; letter-spacing: -.02em; }
+.doppler-results-heading > span { font-size: 12px; color: var(--lab-accent); font-weight: 600; }
+.doppler-readings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
+.doppler-reading { min-width: 0; }
+.doppler-reading dt { font-size: 12px; color: var(--lab-secondary); }
+.doppler-reading dd { margin-top: 4px; }
+.doppler-reading output { font-family: var(--font-heading, inherit); font-size: clamp(18px, 3cqi, 25px); line-height: 1.3; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.doppler-reading-primary output { color: var(--lab-accent); font-weight: 650; }
+.doppler-results > .doppler-hint { margin-top: 17px; padding-top: 12px; border-top: 1px solid var(--line); }
+.doppler-controls { overflow: hidden; }
+.doppler-controls-heading { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.doppler-controls-heading button { min-height: 44px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--lab-accent); font-size: 12px; }
+.doppler-controls-heading button:hover { border-color: var(--lab-accent); }
+.doppler-controls-body { display: grid; gap: 20px; padding: 17px; }
+.doppler-control { min-width: 0; }
+.doppler-control-label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 7px; font-size: 13px; font-weight: 550; }
+.doppler-control-label > span { color: var(--lab-secondary); font-size: 14px; }
+.doppler-number-wrap { display: flex; min-width: 0; align-items: center; gap: 6px; }
+.doppler-number-wrap input { width: 100%; min-width: 0; min-height: 44px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font-size: 16px; font-variant-numeric: tabular-nums; }
+.doppler-number-wrap > span { flex-shrink: 0; min-width: 32px; color: var(--lab-secondary); font-size: 12px; }
+.doppler-number-wrap input[aria-invalid="true"] { border: 2px solid var(--ink); background: color-mix(in srgb, var(--ink) 5%, var(--surface)); }
+.doppler-lab input.doppler-slider { display: block; appearance: none; width: 100%; min-width: 0; height: 44px; margin: 2px 0 0; border: 0; border-radius: 0; background: transparent; accent-color: var(--lab-accent); cursor: pointer; }
+.doppler-slider::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: var(--line); }
+.doppler-slider::-webkit-slider-thumb { appearance: none; width: 22px; height: 22px; margin-top: -9px; border: 3px solid var(--lab-accent); border-radius: 50%; background: var(--surface); }
+.doppler-slider::-moz-range-track { height: 4px; border-radius: 4px; background: var(--line); }
+.doppler-slider::-moz-range-thumb { width: 16px; height: 16px; border: 3px solid var(--lab-accent); border-radius: 50%; background: var(--surface); }
+.doppler-lab input.doppler-slider:disabled { cursor: not-allowed; opacity: .4; }
+.doppler-lab .doppler-hint { color: var(--lab-secondary); font-size: 12px; line-height: 1.7; }
+.doppler-lab .doppler-field-error { margin-top: 7px; color: var(--ink); font-size: 12px; font-weight: 600; }
+.doppler-fixed-velocity { border-top: 1px solid var(--line); padding-top: 14px; color: var(--lab-secondary); font-size: 12px; }
+.doppler-error-summary { border: 2px solid var(--ink); border-radius: 6px; padding: 11px; color: var(--ink); font-size: 13px; font-weight: 550; }
+.doppler-explanation { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 24px; padding: 22px 0; border-top: 1px solid var(--line); }
+.doppler-lab .doppler-formula-panel h3 { margin-top: 7px; font-size: 22px; font-weight: 550; letter-spacing: -.03em; }
+.doppler-lab .doppler-equation { margin: 16px 0; color: var(--lab-accent); font-size: clamp(16px, 2.3cqi, 22px); line-height: 1.7; font-weight: 550; }
+.doppler-substitution { display: block; border: 1px solid var(--line); border-radius: 7px; padding: 14px; background: var(--surface); font-size: 13px; font-variant-numeric: tabular-nums; line-height: 1.9; overflow-wrap: anywhere; }
+.doppler-lab .doppler-interception { margin: 13px 0 8px; font-size: 13px; }
+.doppler-learning-notes { display: grid; gap: 18px; }
+.doppler-lab .doppler-learning-notes h4 { margin-bottom: 6px; font-size: 15px; line-height: 1.5; font-weight: 600; letter-spacing: -.01em; }
+.doppler-learning-notes p { color: var(--lab-secondary); font-size: 13px; line-height: 1.8; }
+.doppler-lab .doppler-model-note { border-top: 1px solid var(--line); padding: 15px 0 5px; color: var(--lab-secondary); font-size: 12px; line-height: 1.8; }
+.doppler-model-note strong { color: var(--ink); }
+
+@container (min-width: 550px) {
+  .doppler-readings { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@container (min-width: 800px) {
+  .doppler-workspace { grid-template-columns: minmax(0, 1fr) minmax(270px, 300px); }
+  .doppler-explanation { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doppler-lab *, .doppler-lab *::before, .doppler-lab *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
