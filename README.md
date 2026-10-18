@@ -38,6 +38,38 @@ Controls and navigation reflow for smaller screens, and footer type scales with
 viewport width. Reduced motion disables autoplay while keeping deliberate frame
 stepping available.
 
+## Vercel Analytics and Speed Insights
+
+The root App Router layout mounts `Analytics` from `@vercel/analytics/next` and
+`SpeedInsights` from `@vercel/speed-insights/next` once, after the application
+providers. The layout remains a Server Component; no API keys or extra provider
+are required for a standard Vercel deployment.
+
+To activate and verify collection:
+
+1. In the Vercel project dashboard, open **Analytics** and enable Web Analytics.
+2. Open **Speed Insights** and complete any setup shown for the project. Review
+   the current plan, included usage and optional paid features before enabling
+   upgrades.
+3. Deploy these changes to Vercel after enabling the services.
+4. Visit the deployed site, use the lab and check the corresponding dashboards.
+   In the browser Network panel, verify that the injected scripts and collection
+   requests succeed. Version 2 can use generated intake paths; do not assume every
+   request must start with `/_vercel/`.
+
+These services send page-view and browser performance measurements to Vercel.
+Notebook notes, saved observations and calculator inputs are not sent as custom
+analytics events. Topic changes currently use React state rather than URL routes,
+so they are not separate page views. Follow Vercel's privacy guidance and avoid
+placing sensitive information in URLs. Local development does not prove that
+production collection or dashboard activation is working.
+
+Official documentation:
+- [Web Analytics quickstart](https://vercel.com/docs/analytics/quickstart)
+- [Speed Insights quickstart](https://vercel.com/docs/speed-insights/quickstart)
+- [Web Analytics privacy](https://vercel.com/docs/analytics/privacy-policy)
+- [Speed Insights privacy](https://vercel.com/docs/speed-insights/privacy-policy)
+
 ## Development
 
 Requires Node.js and Bun (the package manager pinned in `package.json`).
