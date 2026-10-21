@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test ./src/lib",
     "test:e2e": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

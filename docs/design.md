@@ -27,3 +27,35 @@ Physical time advances at the selected playback rate (default 0.1× for observat
 ## Interaction
 
 Four experiment tabs, guided and sandbox modes, experiment-specific sliders, presets, pause/play, single-frame stepping, reset, top/isometric view, grid, elevation/envelope display, draggable/clickable surface probe, keyboard-accessible probe positioning, measurements and a persistent local notebook with CSV export. Guided experiments pair predictions, procedures and quantitative checks. No account, API key or server-side persistence is needed.
+
+## Figures
+
+Two drawing engines, chosen for the job.
+
+**The Anatomy kit** (`src/components/iso/iso-kit.ts`) draws the ripple tank, the
+measuring bench and the acoustic bench. Muted paper tones, four facing tones
+per solid, hairline ink, one accented subject per figure. Its camera is fixed:
+azimuth and elevation are chosen once and the figure is composed for that view.
+
+**The colour engine** (`src/components/colorfigures/`) draws the wave bench.
+It owns a turnable camera (drag or arrow keys), shades every convex solid with
+three flat tones by the way its face meets a light that turns with the viewer,
+draws a heavy ink silhouette with finer inner lines inside it, and throws a
+flat blue cast shadow from the lamp onto the floor. See-through fades the case
+so the mechanism inside is visible; labels name the parts on the drawing.
+A figure script is a pure function of `(model, time)` returning convex solids
+in world units; the engine sorts, projects and draws them, so a moving part
+costs one geometry rebuild per frame.
+
+World units are metres on the wave bench: the guide rail spans the same 0–10 m
+window as the calibrated scope, and the markers stand at the model's
+displacement at their own station. The bench is honest about what it is — the
+sliders are set to the model, and the drive's needle shows the phase.
+
+## Labels
+
+Words stay out of the isometric drawings. Each of those figures carries a
+keyed legend under its card, and the tank adds an apparatus legend whose
+buttons pick a part out of the scene. The colour figure is the exception: it
+is the only figure the reader can turn round, so it names its own parts on the
+drawing, where a name can be followed as the object turns.

@@ -1,0 +1,123 @@
+/*
+ * Colorfigures for Wavelab.
+ *
+ * Warm paper, a flat blue cast shadow, heavy ink silhouettes and body colours
+ * for the parts that matter. Colour is used where it carries meaning: the
+ * wave itself is the signal colour, the medium is teal, the moving mechanism
+ * lights up in the accent.
+ */
+.colorfigure {
+  --cf-paper: color-mix(in srgb, var(--surface) 94%, var(--palette-cream));
+  --cf-ink: color-mix(in srgb, var(--ink) 86%, var(--surface));
+  --cf-shadow: #2f6fb0;
+  --cf-accent: #ef6a24;
+
+  --cf-cast-l: #d3dae0;
+  --cf-cast-m: #a5b0b9;
+  --cf-cast-d: #78848d;
+  --cf-steel-l: #e9eef1;
+  --cf-steel-m: #c4ccd2;
+  --cf-steel-d: #98a3ab;
+  --cf-iron-l: #6f7783;
+  --cf-iron-m: #545c67;
+  --cf-iron-d: #3c434b;
+  --cf-brass-l: #f2d493;
+  --cf-brass-m: #d2ac59;
+  --cf-brass-d: #9c7933;
+  --cf-signal-l: #ffa268;
+  --cf-signal-m: #ef6a24;
+  --cf-signal-d: #b8480f;
+  --cf-rubber-l: #5c5c5c;
+  --cf-rubber-m: #424242;
+  --cf-rubber-d: #2d2d2d;
+  --cf-paper-l: #fcf8ee;
+  --cf-paper-m: #ebe3d1;
+  --cf-paper-d: #cfc4ac;
+  --cf-medium-l: #a9e3dd;
+  --cf-medium-m: #5cbdb6;
+  --cf-medium-d: #2e8883;
+  min-width: 0;
+}
+
+.dark .colorfigure {
+  --cf-paper: color-mix(in srgb, var(--surface) 88%, var(--palette-charcoal));
+  --cf-ink: color-mix(in srgb, var(--ink) 80%, var(--surface));
+  --cf-cast-l: #b9c2c9;
+  --cf-cast-m: #8d99a3;
+  --cf-cast-d: #616d76;
+  --cf-steel-l: #cfd7dd;
+  --cf-steel-m: #a3adb5;
+  --cf-steel-d: #78838b;
+  --cf-iron-l: #5c646e;
+  --cf-iron-m: #454c55;
+  --cf-iron-d: #2f353c;
+  --cf-brass-l: #e6c078;
+  --cf-brass-m: #c39a48;
+  --cf-brass-d: #8d6c2c;
+  --cf-signal-l: #ff9450;
+  --cf-signal-m: #e4601d;
+  --cf-signal-d: #a53f0d;
+  --cf-paper-l: #efe8d7;
+  --cf-paper-m: #d9d1bd;
+  --cf-paper-d: #b8ae98;
+}
+
+.colorfigure-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 460px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--cf-paper);
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.colorfigure-svg:active { cursor: grabbing; }
+.colorfigure-svg:focus-visible { outline: 2px solid var(--lab-accent); outline-offset: 3px; }
+
+.colorfigure-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding-top: 10px;
+}
+
+.colorfigure-hint {
+  color: var(--lab-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.colorfigure-switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.colorfigure-switches button {
+  min-height: 34px;
+  padding: 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--lab-secondary);
+  font-size: 11px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.colorfigure-switches button:hover { border-color: var(--lab-accent); color: var(--ink); }
+.colorfigure-switches button[aria-pressed="true"] {
+  border-color: var(--lab-accent);
+  background: color-mix(in srgb, var(--lab-accent) 10%, var(--surface));
+  color: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .colorfigure-svg { max-height: 340px; }
+  .colorfigure-bar { flex-direction: column; align-items: flex-start; }
+}

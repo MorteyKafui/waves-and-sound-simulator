@@ -7,6 +7,7 @@ import {
   quarterPeriodWaveTime, resolveWaveProperties, updateWaveProperty, wavePlotCoordinates,
   type WaveProperties, type WavePropertiesDraft, type WaveProperty,
 } from "@/lib/wave-properties";
+import { WaveBenchFigure } from "./wave-bench-figure";
 import "./wave-properties-lab.css";
 
 const INITIAL_WIDTH = 640;
@@ -260,6 +261,7 @@ export function WavePropertiesLab() {
 
   const { x, y, plotWidth, plotHeight } = wavePlotCoordinates(width);
   const valid = model !== null;
+  const timeSource = useCallback(() => runtime.current.time, []);
   const hasExtrema = valid && model.amplitude > 0;
   const metric = (value: number | undefined, unit: string) => value === undefined ? "—" : `${formatWaveProperty(value)} ${unit}`;
   return <section ref={root} className="properties-lab" aria-labelledby={`${id}-title`}
@@ -272,6 +274,18 @@ export function WavePropertiesLab() {
       <h2 id={`${id}-title`}>Wave properties</h2>
       <p>Change the height, spacing and rhythm. Watch a wave travel while one particle stays at the same horizontal position.</p>
     </header>
+
+    <figure className="properties-card properties-bench" aria-labelledby={`${id}-bench-title`}>
+      <div className="properties-instrument-heading">
+        <h3 id={`${id}-bench-title`}>The wave bench</h3>
+        <span className="properties-kicker">FIG. 05 / WAVE INDICATOR BENCH</span>
+      </div>
+      <WaveBenchFigure model={model} timeSource={timeSource}/>
+      <figcaption className="properties-caption">
+        <p>Thirteen markers ride the guide rail. Each one is set to the model’s displacement at its own station, so the ribbon threaded through their tips is the very curve the scope below plots.</p>
+        <p>The drive unit turns at the wave’s frequency and its needle shows the phase on the rail. Open it in see-through to find the motor, the worm wheel and the shaft that turns the phase disc. The probe at x = 2 m never slides sideways: it only rises and falls.</p>
+      </figcaption>
+    </figure>
 
     <div className="properties-workspace">
       <div className="properties-main">

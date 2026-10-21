@@ -70,7 +70,7 @@ test("footer scales readably and theme changes preserve natural tank water", asy
     const font = await footer.locator(":scope > span:last-child").evaluate(element => parseFloat(getComputedStyle(element).fontSize));
     expect(font).toBeGreaterThanOrEqual(12);
     sizes.push(font);
-    await expect(footer).toContainText("Mortey Kafui");
+    await expect(footer.locator(".footer-credit")).toHaveText("made with love by Dr. Isaac Kwesi Acquah & Mortey Kafui");
     await expectNoOverflow(page);
   }
   expect(sizes[2]).toBeGreaterThan(sizes[0]);
