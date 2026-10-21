@@ -13,9 +13,36 @@ export interface TankProps {
   grid: boolean; top: boolean; resetKey: number; stepKey: number;
   probe: ProbePoint; onProbeChange: (point: ProbePoint) => void;
   clockRef: RefObject<number>;
+  /** Which assembly the reader is inspecting; empty means none. */
+  inspect: string;
+  onInspect: (part: string) => void;
 }
 const NX = 256;
 const NY = 192;
+
+/* The apparatus legend: what each part of the bench is and what it does. */
+const APPARATUS: Record<Experiment, { id: string; label: string; description: string; readout: string }[]> = {
+  reflection: [
+    { id: "sources", label: "Dipper", description: "A ball on a stem, driven up and down at the set frequency.", readout: "The dipper is the only thing making waves. Change the frequency and the whole field changes with it." },
+    { id: "barrier", label: "Rigid wall", description: "A solid barrier standing across the tank.", readout: "A rigid wall cannot move, so a crest returns as a crest: no phase inversion, and a node at the wall." },
+  ],
+  refraction: [
+    { id: "sources", label: "Dipper", description: "A ball on a stem, driven up and down at the set frequency.", readout: "The dipper sets the frequency. Frequency never changes when the wave crosses into the shallower water." },
+    { id: "depth", label: "Depth step", description: "A change of water depth halfway along the tank.", readout: "The step changes the phase speed, so the wavefront bends while its frequency stays the same." },
+  ],
+  diffraction: [
+    { id: "sources", label: "Dipper", description: "A ball on a stem, driven up and down at the set frequency.", readout: "The dipper sets the frequency. A narrow gap then radiates almost like a point source." },
+    { id: "aperture", label: "Aperture", description: "Two jaws leaving a gap of the set width.", readout: "Every point in the opening radiates. The ratio of gap width to wavelength decides how far the wave spreads." },
+  ],
+  interference: [
+    { id: "sources", label: "Dipper A and B", description: "Two driven balls, at the set separation and relative phase.", readout: "Two coherent sources add. Equal phase reinforces; half a cycle out of phase cancels." },
+  ],
+};
+const PROBE_PART = {
+  id: "probe", label: "Probe",
+  description: "A pointer you drag over the water to read the local elevation.",
+  readout: "The probe reads the elevation at one point, in millimetres. It never moves the water.",
+};
 
 function apparatus(experiment: Experiment, parameters: WaveParameters, top: boolean) {
   const P = top ? TOP_PROJECTION : PROJECTION;
@@ -36,7 +63,7 @@ function apparatus(experiment: Experiment, parameters: WaveParameters, top: bool
 
 /** Static SVG hardware surrounds a registered Canvas 2D water plane. */
 export function Tank(props: TankProps) {
-  const { art, experiment, parameters, playing, speed, display, grid, top, probe, onProbeChange, clockRef, resetKey, stepKey } = props;
+  const { art, experiment, parameters, playing, speed, display, grid, top, probe, onProbeChange, clockRef, resetKey, stepKey, inspect, onInspect } = props;
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timeRef = useRef<HTMLSpanElement>(null);
@@ -199,8 +226,11 @@ export function Tank(props: TankProps) {
   }
   const point = at(probe.x, probe.y, 0, top);
   const currentP = top ? TOP_PROJECTION : PROJECTION;
+  const parts = [...APPARATUS[experiment], PROBE_PART];
 
-  return <div className={`tank-container${top ? " is-top" : ""}`}>
+  return <>
+  <div className={`tank-container${top ? " is-top" : ""}`} data-inspect={inspect || undefined}>
+    <div className="tank-viewport">
     <div className="tank-stage iso" ref={stageRef} tabIndex={0} role="group"
       aria-label={`${experiment} ripple tank. Click or drag the water to place the probe. Arrow keys move the probe by 5 millimeters; Shift moves by 25.`}
       onKeyDown={(event) => {
@@ -228,23 +258,41 @@ export function Tank(props: TankProps) {
       <canvas className="tank-canvas" ref={canvasRef} aria-hidden="true"/>
       <svg className="tank-svg tank-front iso-svg" viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`} aria-hidden="true">
 
-        {experiment !== "interference" && !top && <g dangerouslySetInnerHTML={{ __html: art.paddle }}/>}
-        <g dangerouslySetInnerHTML={{ __html: insert }}/>
+        {experiment !== "interference" && !top && <g data-tank-part="sources" dangerouslySetInnerHTML={{ __html: art.paddle }}/>}
+        <g data-tank-part={experiment === "reflection" ? "barrier" : experiment === "refraction" ? "depth" : experiment === "diffraction" ? "aperture" : undefined}
+          dangerouslySetInnerHTML={{ __html: insert }}/>
         {!top && <g key="tank-front" dangerouslySetInnerHTML={{ __html: art.front }}/>}
         {experiment === "interference" && !top && <>
-          <g ref={sourceA} transform={translateAlong(PROJECTION, [0, -parameters.separation / 2, 0])} dangerouslySetInnerHTML={{ __html: art.source }}/>
-          <g ref={sourceB} transform={translateAlong(PROJECTION, [0, parameters.separation / 2, 0])} dangerouslySetInnerHTML={{ __html: art.source }}/>
+          <g ref={sourceA} data-tank-part="sources" transform={translateAlong(PROJECTION, [0, -parameters.separation / 2, 0])} dangerouslySetInnerHTML={{ __html: art.source }}/>
+          <g ref={sourceB} data-tank-part="sources" transform={translateAlong(PROJECTION, [0, parameters.separation / 2, 0])} dangerouslySetInnerHTML={{ __html: art.source }}/>
         </>}
         {experiment === "interference" && top && [-1, 1].map(sign => {
           const [x, y] = at(-100, sign * parameters.separation / 2, 0, true);
           return <g key={sign}><circle cx={x} cy={y} r="7" className="source-top"/><circle cx={x} cy={y} r="2" fill="var(--primary-foreground)"/></g>;
         })}
-        <g transform={`translate(${point[0]} ${point[1]})`} className="water-probe">
+        <g transform={`translate(${point[0]} ${point[1]})`} className="water-probe" data-tank-part="probe">
           <circle r="9"/><path d="M-14 0h8M6 0h8M0-14v8M0 6v8"/><circle r="2" className="probe-center"/>
         </g>
       </svg>
     </div>
     <div className="scene-probe"><span className="probe-status"/><span>PROBE</span><span className="probe-coordinates">{probe.x}, {probe.y} mm</span><strong ref={valueRef}>0.000 mm</strong></div>
     <div className="scene-clock">t <span ref={timeRef}>0.00 s</span></div>
-  </div>;
+    </div>
+  </div>
+  <div className="tank-apparatus">
+    <div className="tank-apparatus-heading">
+      <h3>What you are looking at</h3>
+      <p>Choose a part to pick it out in the tank.</p>
+    </div>
+    <div className="tank-apparatus-keys">
+      {parts.map((part) => <button key={part.id} type="button" className="tank-apparatus-key"
+        data-active={inspect === part.id} aria-pressed={inspect === part.id}
+        onClick={() => onInspect(inspect === part.id ? "" : part.id)}>
+        <span className="tank-apparatus-mark" aria-hidden="true"/>
+        <span><strong>{part.label}</strong><span className="tank-apparatus-description">{part.description}</span></span>
+      </button>)}
+    </div>
+    <p className="tank-apparatus-readout">{inspect ? parts.find(part => part.id === inspect)?.readout : "The water is the elevation field from the same model as every number on this page."}</p>
+  </div>
+  </>;
 }

@@ -4,10 +4,12 @@ An interactive wave-physics laboratory built with Next.js, React and Tailwind CS
 
 ## Explore
 
-The lab opens on **Wave properties**: an animated travelling wave with editable
-amplitude, frequency, period and wavelength; labeled crests and troughs; a fixed
-particle probe; and linked speed measurements. Frequency and period are reciprocal.
-Changing an input pauses the wave and returns its clock to zero.
+The lab opens on **Wave properties**: a wave-indicator bench whose thirteen
+markers carry the travelling wave, followed by a calibrated scope on fixed
+metre axes with editable amplitude, frequency, period and wavelength; labeled
+crests and troughs; a fixed particle probe; and linked speed measurements.
+Frequency and period are reciprocal. Changing an input pauses the wave and
+returns its clock to zero.
 
 Nine topics are available from the experiment tabs, sidebar and field guide:
 
@@ -23,6 +25,39 @@ Calculators show units, formulas and numerical substitutions. Invalid inputs
 withhold results rather than showing stale values, NaN or infinity. Model
 assumptions and limits are described alongside each experiment. Only ripple-tank
 observations are stored in the local notebook.
+
+## Figures and labels
+
+Every experiment is drawn as a real machine rather than a diagram, and every
+figure carries a legend that names what is on it.
+
+- **The ripple tank** (topics 01–04) is an isometric bench: bed plate, levelling
+  feet, retaining walls, a gantry bridge, driven dippers and a controller with
+  a knurled dial. Under the tank, an *apparatus legend* lists the parts of the
+  current experiment — dipper, rigid wall, depth step, aperture, probe — and
+  choosing one picks it out in the scene and explains what it does.
+- **The wave bench** (topic 05) is a colour figure: a guide rail carrying
+  thirteen markers, a drive unit with a phase disc, a fixed probe at x = 2 m and
+  a blue cast shadow. Drag it to turn it, open it in *see-through* to find the
+  motor, the worm wheel and the shaft, and switch *Labels* on to name the parts.
+  The calibrated scope stays below it as the precise graph view.
+- **The measuring bench** (topics 06–08) is an isometric optical bench that
+  accepts three interchangeable subjects: a vertical chart panel that records a
+  travelling wave and a pulse, a suspended string, and a sectioned acoustic
+  specimen. The index carriages' pointers rise to the crests they mark.
+- **The acoustic bench** (topic 09) carries a speaker and a microphone on
+  carriages, with the wavefronts lying flat in the medium plane above them, so
+  a moving source visibly bunches its crests ahead and spreads them behind.
+
+Two engines draw these. `src/components/iso/iso-kit.ts` is the Anatomy kit:
+muted paper tones, four facing tones per solid and hairline ink. It draws the
+ripple tank, the measuring bench and the acoustic bench. `src/components/
+colorfigures/` is a colour engine: three flat tones by the way a face meets a
+light that turns with the viewer, a heavy ink silhouette with finer inner
+lines, a flat blue cast shadow, and a turnable camera. It draws the wave bench.
+The labels for the isometric figures live in a keyed legend under the card; the
+colour figure names its own parts on the drawing, because that is the only
+figure the reader can turn round.
 
 ## Responsive design and themes
 

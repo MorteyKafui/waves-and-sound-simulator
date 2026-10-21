@@ -4,14 +4,12 @@ import { useId, useState, type ReactNode } from "react";
 import {
   GAS_CONSTANT, GAS_PRESETS, LIQUID_PRESETS, SOLID_PRESETS,
   calculateSoundSpeed, calculateStringSpeed, calculateWaveSpeed,
-  celsiusToKelvin, parseNumericInput, samplePulse, sampleWaveCycle,
+  celsiusToKelvin, parseNumericInput,
   transitTime, waveAtSpeed,
   type SoundMedium, type SoundSpeedInput, type WaveSpeedTopic,
 } from "@/lib/wave-speed";
-import {
-  cylinder, iso, knurl, pathOf, planOutline, ring, slabOf, topTicks,
-  type Plan, type Projection, type SolidPaths,
-} from "./iso/iso-kit";
+import { SpeedBenchArt, type SpeedBenchKind } from "./speed-bench-art";
+import { FigureLegend, type FigureKey } from "./iso/legend";
 
 // CSS is deliberately separate: the host imports wave-speed-lab.css globally.
 type Calculation<T> = { ok: true; value: T } | { ok: false; error: string };
@@ -104,94 +102,39 @@ function LearningNotes({ title, children }: { title: string; children: ReactNode
     <h3>{title}</h3><div className="speed-notes-body">{children}</div></section>;
 }
 
-// A small plotting bench: four two-piece feet, a bevelled chassis, paper bed,
-// two ruled strips, two sensor fixtures, knurled adjusters and sliding cursors.
-const PROJECTION: Projection = { origin: [310, 139], scale: 1.08, azimuth: 77, elevation: 55 };
-const BASE: Plan = { x: -179, y: -58, w: 358, d: 116, r: 7 };
-const PAPER: Plan = { x: -142, y: -29, w: 284, d: 58, r: 1 };
-const TRACE_Z = 9.85;
-const FRONT_TICKS = topTicks(-135, 135, 4.5, 5, 43, 3.85, [3, 7], PROJECTION);
-const BACK_TICKS = topTicks(-135, 135, 4.5, 5, -53, 3.85, [3, 7], PROJECTION);
-const SHAPES = {
-  feet: [-151, 151].flatMap(x => [-42, 42].flatMap(y => [
-    cylinder(x, y, 9, -13, 3, PROJECTION), cylinder(x, y, 7, -10, 5, PROJECTION),
-  ])),
-  chassis: slabOf(BASE, -5, 8, PROJECTION, 6, 1),
-  bed: slabOf({ ...PAPER, x: -146, y: -33, w: 292, d: 66, r: 3 }, 3, 6, PROJECTION, 5, 0.7),
-  paper: slabOf(PAPER, 9, 0.8, PROJECTION, 3),
-  rails: [-39, 34].map(y => slabOf({ x: -142, y, w: 284, d: 5, r: 1 }, 3, 3, PROJECTION, 3, 0.4)),
-  rulers: [-53, 43].map(y => slabOf({ x: -142, y, w: 284, d: 9, r: 1 }, 3, 0.8, PROJECTION, 3)),
-  fixtureBases: [-161, 161].map(x => slabOf({ x: x - 11, y: -23, w: 22, d: 46, r: 3 }, 3, 4, PROJECTION, 4, 0.6)),
-  fixtures: [-161, 161].map(x => slabOf({ x: x - 8, y: -16, w: 16, d: 32, r: 2 }, 7, 9, PROJECTION, 4, 0.8)),
-  knobs: [-161, 161].map(x => cylinder(x, 0, 5.5, 16, 4, PROJECTION, 24, 0.4)),
+type SnapshotModel = { speed: number; wavelength?: number | null; period?: number | null; distance?: number; duration?: number };
+
+/* One legend per bench, keyed to what the drawing actually shows. */
+const BENCH_KEYS: Record<SpeedBenchKind, FigureKey[]> = {
+  wave: [
+    { mark: "lit", label: "The traced displacement" },
+    { mark: "raised", label: "Chart reading head, at each end of the measured distance" },
+    { mark: "flat", label: "The chart panel and its ruled scale" },
+    { mark: "edge", label: "Index carriage, its pointer on a crest" },
+  ],
+  pulse: [
+    { mark: "lit", label: "The travelling pulse crest" },
+    { mark: "raised", label: "Chart reading head, at each end of the measured distance" },
+    { mark: "flat", label: "The chart panel and its ruled scale" },
+    { mark: "edge", label: "Index carriage, its pointer on the pulse" },
+  ],
+  string: [
+    { mark: "lit", label: "The travelling string" },
+    { mark: "raised", label: "Sliding jaw and tension screw" },
+    { mark: "dotted", label: "The undisturbed rest line" },
+    { mark: "flat", label: "Pointer rail, calibrated in metres" },
+  ],
+  sound: [
+    { mark: "lit", label: "Compression band" },
+    { mark: "raised", label: "Transducer, coupled to the specimen" },
+    { mark: "raised", label: "The tracked particle, oscillating in place" },
+    { mark: "flat", label: "Material section: solid, rod or fluid cell" },
+  ],
 };
 
-function Solid({ shape, tone = "structure" }: { shape: SolidPaths; tone?: "base" | "structure" | "paper" | "cursor" }) {
-  return <g className={`speed-solid speed-solid-${tone}`}>
-    <path className="speed-solid-fill" d={shape.fill}/>
-    {shape.shades.map((path, index) => <path className={`speed-shade-${index}`} d={path} key={index}/>)}
-    <path className="speed-solid-top" d={shape.top}/>
-    <path className="speed-solid-edge" d={shape.outline}/>
-    {shape.bevel && <path className="speed-solid-bevel" d={shape.bevel}/>}
-  </g>;
-}
-
-function Screw({ x, y, z }: { x: number; y: number; z: number }) {
-  const [cx, cy] = iso([x, y, z], PROJECTION);
-  return <g><path className="speed-screw" d={ring(x, y, 1.8, z, PROJECTION, 12)}/><circle className="speed-screw-dot" cx={cx} cy={cy} r="0.65"/></g>;
-}
-
-function Bench({ kind, phase, valid }: { kind: "wave" | "pulse" | "sound"; phase: number; valid: boolean }) {
-  const path = kind === "sound" ? "" : pathOf(Array.from({ length: 241 }, (_, index) => {
-    const u = index / 240;
-    const displacement = kind === "pulse" ? 22 * samplePulse(u, phase) : 18 * sampleWaveCycle(2 * u, phase);
-    return iso([-135 + 270 * u, -displacement, TRACE_Z], PROJECTION);
-  }));
-  const firstCursor = (((kind === "sound" ? 0.5 : 0.25) + phase) % 1) / 2;
-  const cursors = kind === "pulse" ? [phase] : [firstCursor, firstCursor + 0.5];
-  return <svg className="speed-bench" viewBox="0 0 620 300" role="img"
-    aria-label={!valid ? "Measuring bench awaiting valid inputs" : kind === "sound"
-      ? "Longitudinal sound: compression bands and particles moving along the propagation direction"
-      : kind === "pulse" ? "A pulse crossing the measured distance between two sensors" : "A transverse wave trace with cursors one wavelength apart"}>
-    <ellipse className="speed-bench-shadow" cx="310" cy="245" rx="222" ry="22"/>
-    {SHAPES.feet.map((shape, index) => <Solid key={index} shape={shape} tone="base"/>)}
-    <Solid shape={SHAPES.chassis} tone="base"/>
-    <path className="speed-bench-groove" d={planOutline({ x: -174, y: -53, w: 348, d: 106, r: 4 }, 3.05, PROJECTION)}/>
-    {[-169, 169].flatMap(x => [-47, 47].map(y => <Screw key={`${x}-${y}`} x={x} y={y} z={3.1}/>))}
-    {SHAPES.rails.map((shape, index) => <Solid shape={shape} key={index}/>)}
-    <Solid shape={SHAPES.bed}/><Solid shape={SHAPES.paper} tone="paper"/>
-    {SHAPES.rulers.map((shape, index) => <Solid shape={shape} key={index}/>)}
-    <path className="speed-tick" d={FRONT_TICKS.minor + BACK_TICKS.minor}/>
-    <path className="speed-major-tick" d={FRONT_TICKS.major + BACK_TICKS.major}/>
-    {[-138, 138].flatMap(x => [-49, 47].map(y => <Screw key={`${x}-${y}`} x={x} y={y} z={3.9}/>))}
-    <path className="speed-trace-axis" d={pathOf([iso([-142, 0, TRACE_Z], PROJECTION), iso([142, 0, TRACE_Z], PROJECTION)])}/>
-    {valid && (kind === "sound" ? <g>
-      {[-14, 0, 14].flatMap(y => Array.from({ length: 49 }, (_, index) => {
-        const u = (index + 0.5) / 49;
-        const [cx, cy] = iso([-135 + 270 * u + 4 * sampleWaveCycle(2 * u, phase), y, TRACE_Z], PROJECTION);
-        return <circle className={index === 24 && y === 0 ? "speed-tracked-particle" : "speed-particle"}
-          cx={cx} cy={cy} r={index === 24 && y === 0 ? 2.8 : 1.5} key={`${y}-${index}`}/>;
-      }))}
-    </g> : <path className="speed-trace" d={path}/>)}
-    {SHAPES.fixtureBases.map((shape, index) => <Solid shape={shape} key={index}/>)}
-    {SHAPES.fixtures.map((shape, index) => <Solid shape={shape} key={index}/>)}
-    {[-161, 161].flatMap(x => [-19, 19].map(y => <Screw key={`${x}-${y}`} x={x} y={y} z={7.05}/>))}
-    {SHAPES.knobs.map((shape, index) => <Solid shape={shape} key={index}/>)}
-    {[-161, 161].map(x => <path className="speed-knurl" key={x} d={knurl(x, 0, 5.5, 16, 20, 24, PROJECTION)}/>)}
-    {valid && cursors.map((u, index) => {
-      const x = -135 + 270 * u;
-      return <g key={index}>
-        <Solid shape={slabOf({ x: x - 3.5, y: 33, w: 7, d: 7, r: 0.8 }, 6, 3, PROJECTION, 3)} tone="cursor"/>
-        <Screw x={x} y={36.5} z={9.1}/>
-        <path className="speed-cursor-mark" d={pathOf([iso([x, 40, 6.1], PROJECTION), iso([x, 52, 3.9], PROJECTION)])}/>
-      </g>;
-    })}
-  </svg>;
-}
-
-type SnapshotModel = { speed: number; wavelength?: number | null; period?: number | null; distance?: number; duration?: number };
-function WaveFigure({ kind = "wave", model, caption }: {
-  kind?: "wave" | "pulse" | "sound"; model: SnapshotModel | null; caption: string;
+function WaveFigure({ kind = "wave", model, caption, medium = "solid", solidMode = "bulk" }: {
+  kind?: SpeedBenchKind; model: SnapshotModel | null; caption: string;
+  medium?: SoundMedium; solidMode?: "bulk" | "rod";
 }) {
   const [phase, setPhase] = useState(0);
   const id = useId();
@@ -199,11 +142,14 @@ function WaveFigure({ kind = "wave", model, caption }: {
   return <figure className="speed-card speed-figure">
     <div className="speed-figure-top"><span className="speed-kicker">FIG. / THE MEASURING BENCH</span>
       <span className="speed-figure-state">{model ? "Live snapshot" : "Awaiting inputs"}</span></div>
-    <Bench kind={kind} phase={phase} valid={model !== null}/>
+    <SpeedBenchArt kind={kind} phase={phase} valid={model !== null} medium={medium} solidMode={solidMode}/>
+    <FigureLegend keys={BENCH_KEYS[kind]}/>
     <div className="speed-figure-scale">{model ? kind === "pulse"
       ? <>Sensor separation: <strong>{format(model.distance!)} m</strong> · crest at {format(phase * model.distance!)} m</>
+      : kind === "sound" ? <>Wavelength in the medium: <strong>λ = {format(model.wavelength!)} m</strong> · the particles stay put</>
       : <>Cursor spacing: <strong>λ = {format(model.wavelength!)} m</strong> · full ruler = 2λ</>
       : "Enter valid values to calibrate the ruler."}</div>
+
     <div className="speed-snapshot-controls">
       <div className="speed-snapshot-heading"><label htmlFor={id}>{kind === "pulse" ? "Pulse travel" : "Time through one period"}</label>
         <output htmlFor={id}>{model && duration ? `t = ${format(phase * duration)} s` : "t = —"}</output></div>
@@ -289,7 +235,7 @@ function StringLab() {
   const value = result.ok ? result.value : null;
   const substitution = value ? `${value.input.densityMode === "mass-length" ? `μ = ${format(value.input.mass)} kg / ${format(value.input.length)} m = ${format(value.linearDensity)} kg/m; ` : ""}v = √(${format(value.input.tension)} N / ${format(value.linearDensity)} kg/m) = ${format(value.speed)} m/s` : undefined;
   return <div className="speed-grid"><div className="speed-main-column">
-    <WaveFigure model={value} caption="A travelling transverse displacement trace, not a standing-wave mode. The two-wavelength window is a spatial graph, not a drawing of the full string."/>
+    <WaveFigure kind="string" model={value} caption="A travelling transverse displacement trace, not a standing-wave mode. The two-wavelength window is a spatial graph, not a drawing of the full string."/>
     <Readout result={result} formula="v = √(T / μ);  μ = m / L;  λ = v / f" substitution={substitution}
       metrics={value ? [
         { label: "Linear density", value: value.linearDensity, unit: "kg/m", detail: "Mass per unit length, not kg/m³" },
@@ -356,7 +302,7 @@ function SoundLab() {
     substitution = `${expression} = ${format(value.speed)} m/s${value.kelvin !== null ? `; TK = ${format(value.kelvin)} K` : ""}`;
   }
   return <div className="speed-grid"><div className="speed-main-column">
-    <WaveFigure kind="sound" model={value} caption="Longitudinal sound: compression bands travel while material particles oscillate parallel to that direction. The highlighted particle stays near its rest position; displacement and spacing are schematic."/>
+    <WaveFigure kind="sound" model={value} medium={medium} solidMode={solidMode} caption="Longitudinal sound: compression bands travel while material particles oscillate parallel to that direction. The highlighted particle stays near its rest position; displacement and spacing are schematic."/>
     <Readout result={result} formula={formula} substitution={substitution} metrics={value ? [
       { label: "Wavelength", value: value.wavelength, unit: "m", detail: `c / f at ${format(value.sourceFrequency)} Hz` },
       { label: "Time over 1 metre", value: value.travelTime, unit: "s", detail: "One-way travel time: 1 m / c" },

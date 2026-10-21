@@ -1,0 +1,168 @@
+/*
+ * Anatomy tier: Figure. Concept: a bench-mounted ripple tank; a fixed, machined
+ * frame holds the calibrated water plane while driven dippers or a paddle excite
+ * the field. Inspection lights the real hardware, never explodes or tilts it.
+ *
+ * Parts inventory (existing apparatus retained, grouped before geometry changes):
+ * Base: 01 bedplate, 02 perimeter groove, 03 side seam, 04–07 bed screws,
+ * 08–11 rubber feet, 12–15 foot cups, 16–19 leveling spindles,
+ * 20–23 spindle locknuts, 24–27 mounting shoes, 28–29 underside crossmembers.
+ * Vessel: 30 floor, 31–34 lower retaining rails, 35–38 glass walls,
+ * 39–42 beveled rim strips, 43–46 corner caps, 47–50 cap screws,
+ * 51 ruler strip, 52 ruler ticks, 53 nameplate, 54–55 nameplate screws.
+ * Drive: 56–57 upright shoes, 58–59 posts, 60–61 bridge saddles,
+ * 62 bridge, 63 cover, 64–65 carriage rails, 66–67 end screws,
+ * 68–69 carriage plates, 70–73 carriage fasteners, 74–75 motor housings,
+ * 76–77 motor caps, 78–79 underside glands, 80–81 dipper stems,
+ * 82–83 contact tips (the two assemblies remain at the model's true separation).
+ * Bench details: controller shell, faceplate and screws, knurled dial, dial ring,
+ * pointer, power lens, closed ventilation slots; foot contact shadows, glass
+ * edge highlights and face-clipped reflection strips belong to those parts.
+ * Alternatives: a paddle with two rim-supported brackets; a rigid reflecting
+ * barrier; two aperture jaws with face screws; the existing submerged depth-step
+ * overlay. Only the active experiment's insert is fitted.
+ *
+ * Audit boundary: no exploded state, cables, new WebGL, or camera changes. The
+ * project kit has no shape recorder wired into this renderer: focused tests check
+ * registration, source spacing, layer slots and finite paths, not a full 3D
+ * clearance/depth proof. Parent integration owns browser/390px/theme captures.
+ */
+
+.tank-container {
+  --tank-inspect-ink: var(--foreground);
+  --tank-inspect-soft: color-mix(in srgb, var(--foreground) 8%, var(--background));
+  --tank-glass-body: color-mix(in srgb, var(--palette-cream) 24%, transparent);
+  --tank-glass-edge: color-mix(in srgb, var(--foreground) 40%, transparent);
+  --tank-glass-shine: color-mix(in srgb, var(--palette-cream) 58%, transparent);
+  --tank-contact: color-mix(in srgb, var(--palette-charcoal) 35%, transparent);
+  min-width: 0;
+}
+
+.tank-viewport { position: relative; }
+
+.tank-container .tank-contact-shadow {
+  fill: var(--tank-contact);
+  stroke: none;
+  filter: blur(2px);
+}
+
+.tank-container .tank-stage .tank-glazing > .iso-fill { fill: var(--tank-glass-body); }
+.tank-container .tank-stage .tank-glazing > .iso-shade { opacity: .17; }
+.tank-container .tank-stage .tank-glazing > .iso-top { fill: var(--tank-glass-shine); }
+.tank-container .tank-stage .tank-glazing > .iso-edge,
+.tank-container .tank-stage .tank-glazing > .iso-crease {
+  stroke: var(--tank-glass-edge);
+  stroke-width: .65px;
+}
+.tank-container .tank-glass-reflection { fill: var(--tank-glass-shine); stroke: none; opacity: .35; }
+.tank-container .tank-glass-edge { fill: none; stroke: var(--tank-glass-shine); stroke-width: .85px; }
+
+.tank-container .tank-stage .tank-locknut,
+.tank-container .tank-stage .tank-gland {
+  --anatomy-top: color-mix(in srgb, var(--anatomy-highlight) 80%, var(--anatomy-shadow));
+  --anatomy-shade-0: color-mix(in srgb, var(--anatomy-highlight) 28%, var(--anatomy-shadow));
+  --anatomy-shade-1: color-mix(in srgb, var(--anatomy-highlight) 43%, var(--anatomy-shadow));
+  --anatomy-shade-2: color-mix(in srgb, var(--anatomy-highlight) 58%, var(--anatomy-shadow));
+  --anatomy-shade-3: color-mix(in srgb, var(--anatomy-highlight) 73%, var(--anatomy-shadow));
+}
+
+.tank-container .tank-stage .tank-controller {
+  --anatomy-top: color-mix(in srgb, var(--anatomy-highlight) 72%, var(--anatomy-shadow));
+  --anatomy-shade-0: color-mix(in srgb, var(--anatomy-highlight) 24%, var(--anatomy-shadow));
+  --anatomy-shade-1: color-mix(in srgb, var(--anatomy-highlight) 36%, var(--anatomy-shadow));
+  --anatomy-shade-2: color-mix(in srgb, var(--anatomy-highlight) 48%, var(--anatomy-shadow));
+  --anatomy-shade-3: color-mix(in srgb, var(--anatomy-highlight) 60%, var(--anatomy-shadow));
+}
+
+/* Highlight only the selected assembly's real edges; the water is never tinted. */
+.tank-container[data-inspect="sources"] [data-tank-part="sources"],
+.tank-container[data-inspect="barrier"] [data-tank-part="barrier"],
+.tank-container[data-inspect="depth"] [data-tank-part="depth"],
+.tank-container[data-inspect="aperture"] [data-tank-part="aperture"],
+.tank-container[data-inspect="probe"] [data-tank-part="probe"] {
+  --anatomy-mid: var(--tank-inspect-ink);
+  --anatomy-hi: var(--tank-inspect-ink);
+}
+.tank-container[data-inspect="sources"] [data-tank-part="sources"] .iso-edge,
+.tank-container[data-inspect="barrier"] [data-tank-part="barrier"] .iso-edge,
+.tank-container[data-inspect="aperture"] [data-tank-part="aperture"] .iso-edge {
+  stroke: var(--tank-inspect-ink);
+  stroke-width: 1.45px;
+}
+.tank-container[data-inspect="depth"] [data-tank-part="depth"] .step-boundary {
+  stroke: var(--tank-inspect-ink);
+  stroke-width: 2px;
+  stroke-dasharray: none;
+}
+.tank-container[data-inspect="sources"] [data-tank-part="sources"] .source-top,
+.tank-container[data-inspect="probe"] [data-tank-part="probe"] > circle,
+.tank-container[data-inspect="probe"] [data-tank-part="probe"] > path {
+  stroke: var(--tank-inspect-ink);
+  stroke-width: 2px;
+}
+
+.tank-container .scene-probe,
+.tank-container .scene-probe strong,
+.tank-container .scene-clock {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.tank-container .scene-probe { left: 16px; bottom: 10px; gap: 6px; }
+.tank-container .scene-clock { right: 16px; bottom: 10px; gap: 6px; pointer-events: none; }
+.tank-container .scene-clock > span { min-width: 54px; }
+
+.tank-apparatus {
+  border-top: 1px solid var(--border);
+  padding: 16px;
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+}
+.tank-apparatus-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+.tank-apparatus-heading h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.tank-apparatus-heading p { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted-foreground); }
+.tank-apparatus-keys { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.tank-apparatus-key {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  min-height: 64px;
+  min-width: 44px;
+  width: 100%;
+  padding: 11px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--foreground);
+  text-align: left;
+  line-height: 1.5;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.tank-apparatus-key[data-active="true"] { background: var(--tank-inspect-soft); border-color: var(--foreground); }
+.tank-apparatus-key[aria-pressed="true"] { box-shadow: inset 2px 0 var(--foreground); }
+.tank-apparatus-key:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.tank-apparatus-mark {
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border: 1px solid currentColor;
+  box-shadow: inset 0 0 0 2px var(--card);
+}
+.tank-apparatus-key[data-active="true"] .tank-apparatus-mark { background: currentColor; }
+.tank-apparatus-key strong { display: block; font-size: 12px; font-weight: 600; }
+.tank-apparatus-description { display: block; margin-top: 2px; font-size: 12px; color: var(--muted-foreground); overflow-wrap: anywhere; }
+.tank-apparatus-readout { min-height: 3.2em; margin: 12px 0 0; font-size: 12px; line-height: 1.6; color: var(--lab-secondary); overflow-wrap: anywhere; }
+.tank-apparatus-readout strong { color: var(--foreground); font-weight: 600; }
+
+@media (max-width: 600px) {
+  .tank-apparatus { padding: 14px 12px; }
+  .tank-apparatus-keys { grid-template-columns: 1fr; gap: 6px; }
+  .tank-apparatus-key { min-height: 56px; padding: 9px 10px; }
+  .tank-apparatus-readout { min-height: 4.8em; }
+  .tank-container .scene-probe { left: 12px; bottom: 6px; gap: 5px; }
+  .tank-container .scene-clock { right: 12px; bottom: 6px; }
+  .tank-container .scene-probe .probe-coordinates { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tank-apparatus-key { transition: none; }
+}

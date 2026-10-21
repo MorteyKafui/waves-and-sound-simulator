@@ -1,0 +1,103 @@
+/* Labels for the figures live under the card, never inside the drawing. */
+.figure-legend {
+  display: grid;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+.figure-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.figure-keys li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--lab-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.figure-swatch {
+  flex: none;
+  width: 16px;
+  height: 10px;
+  overflow: visible;
+}
+
+.figure-swatch path {
+  fill: none;
+  stroke: var(--lab-secondary);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.figure-swatch[data-mark="raised"] path,
+.figure-swatch[data-mark="flat"] path { stroke: color-mix(in srgb, var(--ink) 52%, var(--surface)); }
+.figure-swatch[data-mark="lit"] path { stroke: var(--lab-accent); }
+.figure-swatch[data-mark="edge"] path { stroke: var(--ink); }
+.figure-swatch[data-mark="dim"] path { stroke: color-mix(in srgb, var(--ink) 38%, var(--surface)); }
+.figure-swatch[data-mark="dotted"] path { stroke-dasharray: 0.01 3; stroke-width: 1.4; }
+.figure-swatch[data-mark="dashed"] path { stroke-dasharray: 3 2.5; }
+.figure-swatch-crease { stroke: color-mix(in srgb, var(--ink) 26%, var(--surface)) !important; }
+
+.figure-assemblies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.figure-assemblies button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--lab-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+}
+
+.figure-assemblies button:hover { border-color: var(--lab-accent); color: var(--ink); }
+.figure-assemblies button[data-active="true"] {
+  border-color: var(--lab-accent);
+  background: color-mix(in srgb, var(--lab-accent) 8%, var(--surface));
+  color: var(--ink);
+}
+
+.figure-assembly-index {
+  flex: none;
+  color: var(--lab-accent);
+  font: 11px/1 var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.figure-legend-caption {
+  margin: 0;
+  color: var(--lab-secondary);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+@media (max-width: 720px) {
+  .figure-legend { padding: 12px 14px; }
+  .figure-assemblies button { min-height: 40px; }
+}
