@@ -12,6 +12,10 @@ import {
   type DopplerResult,
   type DopplerWavefront,
 } from '../lib/doppler';
+import {
+  DOPPLER_MEDIUM_CLIP, DopplerArtDefs, DopplerBench, DopplerInstrument, dopplerWavefrontPath,
+} from './doppler-art';
+import { FigureLegend, type FigureKey } from './iso/legend';
 
 // The parent imports doppler-lab.css alongside its other laboratory styles.
 type Draft = Record<DopplerField, string>;
@@ -102,61 +106,17 @@ function Reading({ label, value, prominent = false }: { label: string; value: st
   );
 }
 
-/** Small, solid bench parts; x/y locate the near bottom edge, d recedes into the drawing. */
-function BenchBlock({ x, y, w, d, h, accent = false }: { x: number; y: number; w: number; d: number; h: number; accent?: boolean }) {
-  const dx = d * 0.48;
-  const dy = d * 0.34;
-  return (
-    <g className={`doppler-solid${accent ? ' doppler-solid-accent' : ''}`}>
-      <path className="doppler-solid-side" d={`M${x + w},${y} l${dx},${-dy} v${-h} l${-dx},${dy} Z`} />
-      <path className="doppler-solid-front" d={`M${x},${y} h${w} v${-h} h${-w} Z`} />
-      <path className="doppler-solid-top" d={`M${x},${y - h} l${dx},${-dy} h${w} l${-dx},${dy} Z`} />
-      <path className="doppler-solid-bevel" d={`M${x + 1},${y - h + 1} h${w - 2}`} />
-    </g>
-  );
-}
-
-function Fastener({ x, y }: { x: number; y: number }) {
-  return <g className="doppler-fastener"><circle cx={x} cy={y} r="2.3" /><path d={`M${x - 1},${y} h2`} /></g>;
-}
-
-function Instrument({ x, source }: { x: number; source: boolean }) {
-  return (
-    <g>
-      <BenchBlock x={x - 30} y={251} w={58} d={30} h={8} />
-      {[-23, 18].flatMap((offset) => [0, -8].map((dy) => (
-        <BenchBlock key={`${offset}-${dy}`} x={x + offset} y={254 + dy} w={8} d={6} h={5} />
-      )))}
-      {[-23, 23].map((offset) => <Fastener key={offset} x={x + offset} y={239} />)}
-      <BenchBlock x={x - 10} y={243} w={20} d={12} h={6} />
-      <BenchBlock x={x - 3} y={237} w={6} d={6} h={source ? 66 : 74} />
-      <BenchBlock x={x - 8} y={220} w={16} d={9} h={7} />
-      <Fastener x={x} y={216} />
-      <BenchBlock x={x - 8} y={source ? 177 : 169} w={16} d={9} h={7} />
-      {source ? (
-        <>
-          <BenchBlock x={x - 29} y={171} w={58} d={18} h={58} />
-          <rect className="doppler-speaker-face" x={x - 25} y="117" width="50" height="50" rx="5" />
-          <circle className="doppler-speaker-rim" cx={x} cy="142" r="20" />
-          <circle className="doppler-speaker-cone" cx={x} cy="142" r="16" />
-          <circle className="doppler-speaker-dustcap" cx={x} cy="142" r="7" />
-          {[-21, 21].flatMap((dx) => [121, 163].map((y) => <Fastener key={`${dx}-${y}`} x={x + dx} y={y} />))}
-        </>
-      ) : (
-        <>
-          <BenchBlock x={x - 9} y={163} w={18} d={12} h={39} />
-          <rect className="doppler-microphone-grille" x={x - 9} y="124" width="18" height="30" rx="8" />
-          {[130, 135, 140, 145, 150].map((y) => <path className="doppler-grille-slot" key={y} d={`M${x - 5},${y} h10`} />)}
-          <BenchBlock x={x - 10} y={163} w={20} d={12} h={6} />
-          <circle className="doppler-microphone-port" cx={x} cy="159" r="1.7" />
-        </>
-      )}
-    </g>
-  );
-}
+/** The legend under the figure: what each part of the bench is. */
+const BENCH_KEYS: FigureKey[] = [
+  { mark: 'lit', label: 'One crest, one emission period old' },
+  { mark: 'raised', label: 'Speaker: the source' },
+  { mark: 'raised', label: 'Microphone: the observer' },
+  { mark: 'flat', label: 'The bench rule, in metres' },
+];
 
 function WavefrontFigure({ id, parameters, result, fronts }: { id: string; parameters: DopplerParameters; result: DopplerResult | null; fronts: DopplerWavefront[] }) {
   const direction = (value: number) => value === 0 ? 'stationary' : value > 0 ? '→ rightward' : '← leftward';
+  const scale = result ? 36 / result.restWavelengthM : 0;
   return (
     <figure className="doppler-figure" aria-labelledby={`${id}-figure-title`}>
       <div className="doppler-figure-heading">
@@ -170,40 +130,33 @@ function WavefrontFigure({ id, parameters, result, fronts }: { id: string; param
             ? `Nine recent wavefronts expand from their original emission positions at ${parameters.c} metres per second in the medium. Source velocity ${parameters.vs}, observer velocity ${parameters.vo} metres per second. Observer-side spacing ${result.wavelengthAheadM} metres; opposite-side spacing ${result.wavelengthBehindM} metres. The drawing is static and auto-scaled.`
             : 'The bench is shown without wavefronts because one or more inputs are invalid.'}
         </desc>
-        <defs><clipPath id={`${id}-wave-clip`}><rect x="20" y="15" width="680" height="218" rx="12" /></clipPath></defs>
+        <defs>
+          <clipPath id={`${id}-wave-clip`}><path d={DOPPLER_MEDIUM_CLIP} /></clipPath>
+          <DopplerArtDefs id={id}/>
+        </defs>
         <g aria-hidden="true">
-          <ellipse className="doppler-bench-shadow" cx="366" cy="284" rx="317" ry="22" />
           <g clipPath={`url(#${id}-wave-clip)`}>
-            {fronts.toReversed().map((front) => (
-              <g key={front.periodsAgo}>
-                <circle
-                  className="doppler-wavefront"
-                  cx={273 + front.centerXM / result!.restWavelengthM * 36}
-                  cy="142"
-                  r={front.radiusM / result!.restWavelengthM * 36}
-                  opacity={1 - front.periodsAgo / 15}
-                  data-periods-ago={front.periodsAgo}
-                  data-center-x-m={front.centerXM}
-                  data-radius-m={front.radiusM}
-                />
-                <circle className="doppler-emission-mark" cx={273 + front.centerXM / result!.restWavelengthM * 36} cy="142" r="2" />
-              </g>
+            {result && fronts.toReversed().map((front) => (
+              <path
+                key={front.periodsAgo}
+                className="doppler-wavefront"
+                d={dopplerWavefrontPath(front.centerXM * scale, front.radiusM * scale)}
+                opacity={1 - front.periodsAgo / 15}
+                data-periods-ago={front.periodsAgo}
+                data-center-x-m={front.centerXM}
+                data-radius-m={front.radiusM}
+              />
             ))}
           </g>
-          {[70, 627].flatMap((x) => [275, 297].map((y) => <BenchBlock key={`${x}-${y}`} x={x} y={y} w={20} d={16} h={16} />))}
-          <BenchBlock x={41} y={282} w={626} d={47} h={18} />
-          <BenchBlock x={49} y={263} w={604} d={31} h={1} />
-          {[58, 643].flatMap((x) => [248, 260].map((y) => <Fastener key={`${x}-${y}`} x={x} y={y} />))}
-          {[251, 263].map((y) => <BenchBlock key={y} x={77} y={y} w={554} d={5} h={8} />)}
-          {[75, 627].map((x) => <BenchBlock key={x} x={x} y={255} w={8} d={30} h={13} />)}
-          <rect className="doppler-ruler" x="104" y="270" width="502" height="7" rx="1" />
-          {Array.from({ length: 63 }, (_, index) => (
-            <path key={index} className="doppler-ruler-tick" d={`M${108 + index * 8},277 v${index % 5 === 0 ? -6 : -3}`} />
+          {result && fronts.map((front) => (
+            <circle key={front.periodsAgo} className="doppler-emission-mark" cx={273 + front.centerXM * scale} cy="142" r="2" />
           ))}
-          <Instrument x={273} source />
-          <Instrument x={510} source={false} />
+          <DopplerBench highlighted={false} id={id}/>
+          <DopplerInstrument source highlighted={false} id={id}/>
+          <DopplerInstrument source={false} highlighted={false} id={id}/>
         </g>
       </svg>
+      <FigureLegend keys={BENCH_KEYS}/>
       <div className="doppler-instrument-legend">
         <p><strong>Source · speaker</strong><span>{result ? `${direction(parameters.vs)} · ${signed(parameters.vs)} m/s` : 'Velocity unavailable'}</span></p>
         <p><strong>Observer · microphone</strong><span>{result ? `${direction(parameters.vo)} · ${signed(parameters.vo)} m/s` : 'Velocity unavailable'}</span></p>
@@ -212,7 +165,7 @@ function WavefrontFigure({ id, parameters, result, fronts }: { id: string; param
         {result ? (
           <>
             <p><span className="doppler-legend-key" aria-hidden="true" />Crests travel at <strong>{format(parameters.c)} m/s</strong> in the medium, not at the source speed.</p>
-            <p>Each circle is one emission period older; its centre stays where it was emitted. Nine recent crests are shown; older ones continue beyond this snapshot.</p>
+            <p>Each ellipse is one emission period older. It lies flat in the medium, and its centre stays where it was emitted, so a moving source leaves its crests bunched ahead and spread behind.</p>
             <p>Auto-scaled by λ₀ = c/fₛ = <strong>{format(result.restWavelengthM, 4)} m</strong>. Instrument sizes and separation are schematic. Very close crests may be unresolved. Static by design; no animation.</p>
           </>
         ) : <p>Wavefronts and numerical readouts are withheld until all inputs are valid.</p>}

@@ -25,6 +25,8 @@
 .properties-card-heading { padding: 16px; border-bottom: 1px solid var(--properties-line); }
 .properties-card-heading h3 { margin-top: 5px; }
 .properties-instrument { background: color-mix(in srgb, var(--properties-accent) 3%, var(--properties-surface)); }
+.properties-bench { margin-bottom: 16px; }
+.properties-bench .colorfigure { padding: 0 16px; }
 .properties-instrument-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 7px 14px; padding: 16px 16px 8px; }
 .properties-status { color: var(--properties-secondary); font: 12px/1.6 var(--font-mono, monospace); }
 .properties-lab[data-playing="true"] .properties-status { color: var(--properties-accent); }

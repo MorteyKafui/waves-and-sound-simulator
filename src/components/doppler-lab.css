@@ -5,6 +5,10 @@
   --doppler-side: color-mix(in srgb, var(--surface) 57%, var(--lab-secondary));
   --doppler-edge: color-mix(in srgb, var(--lab-secondary) 65%, var(--line));
   --doppler-soft: color-mix(in srgb, var(--lab-accent) 6%, var(--surface));
+  --doppler-rail: color-mix(in srgb, var(--ink) 12%, var(--surface));
+  --doppler-rubber: color-mix(in srgb, var(--ink) 62%, var(--surface));
+  --doppler-brake: color-mix(in srgb, var(--lab-accent) 38%, var(--surface));
+  --doppler-cabinet: color-mix(in srgb, var(--ink) 30%, var(--surface));
   container-type: inline-size;
   width: 100%;
   min-width: 0;
@@ -121,3 +125,64 @@
 @media (prefers-reduced-motion: reduce) {
   .doppler-lab *, .doppler-lab *::before, .doppler-lab *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---- The acoustic bench, drawn with the Anatomy kit --------------------
+ * One cabinet projection runs through the whole figure: the bench's X axis
+ * stays horizontal, so the source reads left and the observer right, and the
+ * wavefronts lie flat in the medium plane above them.
+ */
+.doppler-bench { display: block; width: 100%; height: auto; aspect-ratio: 720 / 316; overflow: hidden; }
+.doppler-bench-shadow { fill: var(--ink); opacity: .07; }
+.doppler-wavefront { fill: none; stroke: var(--lab-accent); stroke-width: 1.6; }
+.doppler-emission-mark { fill: var(--lab-accent); opacity: .55; }
+
+.doppler-solid-front { fill: var(--doppler-front); }
+.doppler-solid-side { fill: var(--doppler-side); }
+.doppler-solid-top { fill: var(--doppler-top); }
+.doppler-solid-bevel { fill: none; stroke: var(--surface); stroke-width: .7px; opacity: .8; }
+.doppler-fastener circle { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .7; }
+.doppler-fastener path { fill: none; stroke: var(--lab-secondary); stroke-width: .7; }
+.doppler-knurl { fill: none; stroke: var(--lab-secondary); stroke-width: .45; }
+.doppler-turned-wall { fill: var(--doppler-side); stroke: var(--doppler-edge); stroke-width: .7; stroke-linejoin: round; }
+.doppler-turned-cap { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .7; }
+.doppler-turned-lip { fill: none; stroke: var(--doppler-edge); stroke-width: .6; }
+.doppler-rubber { fill: var(--doppler-rubber); stroke: var(--doppler-edge); stroke-width: .7; }
+.doppler-bed-casting { fill: var(--doppler-side); stroke: var(--doppler-edge); stroke-width: .8; stroke-linejoin: round; }
+.doppler-bed-seam { fill: none; stroke: var(--lab-secondary); stroke-width: .6; opacity: .6; }
+.doppler-deck { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .7; }
+.doppler-guide-rail { fill: var(--doppler-rail); stroke: var(--doppler-edge); stroke-width: .7; }
+.doppler-rail-glint { fill: none; stroke: var(--surface); stroke-width: .8; opacity: .8; }
+.doppler-ruler-strip { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .6; }
+.doppler-ruler-tick { fill: none; stroke: var(--lab-secondary); stroke-width: .55; }
+.doppler-carriage-seam { fill: none; stroke: var(--lab-secondary); stroke-width: .55; opacity: .55; }
+.doppler-clamp-split { fill: none; stroke: var(--lab-secondary); stroke-width: .7; }
+.doppler-brake { fill: var(--doppler-brake); stroke: var(--doppler-edge); stroke-width: .6; }
+.doppler-speaker-cabinet { fill: var(--doppler-cabinet); stroke: var(--doppler-edge); stroke-width: .8; stroke-linejoin: round; }
+.doppler-cabinet-seam { fill: none; stroke: var(--lab-secondary); stroke-width: .55; opacity: .55; }
+.doppler-service-cover { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .6; }
+.doppler-vent-slot { fill: var(--doppler-side); stroke: none; }
+.doppler-cover-screw { fill: var(--doppler-side); }
+.doppler-speaker-face { fill: var(--doppler-side); stroke: var(--doppler-edge); stroke-width: 1; }
+.doppler-speaker-flange { fill: var(--doppler-top); stroke: var(--lab-secondary); stroke-width: 1; }
+.doppler-speaker-surround { fill: var(--doppler-rubber); stroke: var(--lab-secondary); stroke-width: 1; }
+.doppler-speaker-cone { fill: color-mix(in srgb, var(--lab-accent) 34%, var(--surface)); stroke: var(--lab-accent); stroke-width: 1; }
+.doppler-speaker-cone-seam { fill: none; stroke: var(--lab-secondary); stroke-width: .8; }
+.doppler-speaker-dustcap { fill: var(--lab-accent); stroke: var(--surface); stroke-width: .5; }
+.doppler-grille-shadow { stroke: var(--surface); stroke-width: 2.2; }
+.doppler-speaker-grille { fill: none; stroke: var(--lab-secondary); stroke-width: 1.1; }
+.doppler-grille-mount { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .6; }
+.doppler-microphone-grille { fill: var(--doppler-top); stroke: var(--doppler-edge); stroke-width: .8; }
+.doppler-grille-wire { fill: none; stroke: var(--lab-secondary); stroke-width: .5; }
+.doppler-grille-longitudinal { stroke-width: .4; opacity: .8; }
+.doppler-metal-dark { stop-color: color-mix(in srgb, var(--lab-secondary) 62%, var(--surface)); }
+.doppler-metal-mid { stop-color: color-mix(in srgb, var(--surface) 78%, var(--lab-secondary)); }
+.doppler-metal-light { stop-color: var(--surface); }
+.doppler-cone-light { stop-color: color-mix(in srgb, var(--lab-accent) 32%, var(--surface)); }
+.doppler-cone-mid { stop-color: color-mix(in srgb, var(--lab-accent) 58%, var(--surface)); }
+.doppler-cone-dark { stop-color: color-mix(in srgb, var(--lab-accent) 80%, var(--surface)); }
+.doppler-assembly { transition: opacity 180ms ease; }
+.doppler-contact-shadow { fill: color-mix(in srgb, var(--ink) 60%, transparent); opacity: .34; }
+.doppler-contact-light { fill: color-mix(in srgb, var(--surface) 80%, transparent); opacity: .55; }
+.doppler-bench[data-assembled] .doppler-assembly { opacity: .4; }
+.doppler-bench[data-assembled] .doppler-assembly[data-assembly] { opacity: 1; }
+.doppler-bench[data-assembled] .doppler-assembly[data-assembly="crests"] { opacity: 1; }

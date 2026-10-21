@@ -4,9 +4,11 @@
 @import "@fontsource-variable/bricolage-grotesque";
 @import "@fontsource-variable/jetbrains-mono";
 @import "../components/iso/iso.css";
+@import "../components/iso/legend.css";
 @import "./lab.css";
 @import "../components/wave-speed-lab.css";
 @import "../components/doppler-lab.css";
+@import "../components/tank/tank-visual.css";
 @import "../components/small-screen-notice.css";
 
 @custom-variant dark (&:is(.dark *));

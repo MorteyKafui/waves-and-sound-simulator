@@ -56,7 +56,7 @@
 .speed-figure-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 5px 12px; padding: 17px 20px 0; }
 .speed-figure-top .speed-kicker { color: var(--lab-secondary); letter-spacing: 0.04em; }
 .speed-figure-state { color: var(--lab-accent); font-size: 12px; }
-.speed-bench { display: block; width: 100%; height: auto; max-height: 340px; margin: 0 auto; overflow: visible; }
+.speed-bench { display: block; width: 100%; height: auto; max-height: 360px; margin: 0 auto; overflow: visible; }
 .speed-bench-shadow { fill: var(--ink); opacity: 0.07; }
 .speed-solid {
   --speed-top: color-mix(in srgb, var(--ink) 9%, var(--surface));
@@ -142,3 +142,29 @@
 @media (prefers-reduced-motion: reduce) {
   .speed-lab *, .speed-lab *::before, .speed-lab *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---- Isometric measuring bench -------------------------------------------
+ * The bench is drawn with the Anatomy kit: real solids, four facing tones and
+ * a lit subject. Tone hierarchy: the chassis and feet are lo, the rails and
+ * fixtures are mid, and the traced wave or the specimen under test is the one
+ * accented part the reader should watch.
+ */
+.speed-solid-sample { --speed-top: color-mix(in srgb, var(--lab-accent) 26%, var(--surface)); --speed-side: color-mix(in srgb, var(--lab-accent) 44%, var(--surface)); --speed-edge: color-mix(in srgb, var(--lab-accent) 78%, var(--surface)); }
+.speed-solid-cavity { --speed-top: color-mix(in srgb, var(--ink) 13%, var(--surface)); --speed-side: color-mix(in srgb, var(--ink) 26%, var(--surface)); --speed-edge: color-mix(in srgb, var(--ink) 34%, var(--surface)); }
+.speed-screw-slot { fill: none; stroke: var(--lab-secondary); stroke-width: 0.5px; }
+.speed-major-tick { fill: none; stroke: var(--lab-secondary); stroke-width: 0.8px; }
+.speed-ruler-zero { fill: none; stroke: var(--lab-accent); stroke-width: 1px; }
+.speed-deck-border { fill: none; stroke: var(--line); stroke-width: 0.7px; opacity: 0.8; }
+.speed-contact-shadow { fill: var(--ink); opacity: 0.05; }
+.speed-trace-underlay { fill: none; stroke: var(--surface); stroke-width: 4.4px; stroke-linecap: round; stroke-linejoin: round; }
+.speed-string-core { fill: none; stroke: color-mix(in srgb, var(--ink) 55%, var(--surface)); stroke-width: 3.4px; stroke-linecap: round; }
+.speed-travelling-string { fill: none; stroke: var(--lab-accent); stroke-width: 1.9px; stroke-linecap: round; }
+.speed-string-shadow { fill: none; stroke: var(--ink); stroke-width: 1.6px; stroke-linecap: round; opacity: 0.16; }
+.speed-compression-band { fill: color-mix(in srgb, var(--lab-accent) 20%, transparent); stroke: var(--lab-accent); stroke-width: 0.7px; }
+.speed-assembly { transition: opacity 180ms ease; }
+.speed-bench[data-assembled] .speed-assembly { opacity: 0.45; }
+.speed-bench[data-assembled] .speed-assembly[data-speed-assembly] { opacity: 1; }
+.speed-bench[data-assembled] .speed-assembly[data-speed-assembly="trace"],
+.speed-bench[data-assembled] .speed-assembly[data-speed-assembly="string"],
+.speed-bench[data-assembled] .speed-assembly[data-speed-assembly="sample"],
+.speed-bench[data-assembled] .speed-assembly[data-speed-assembly="particles"] { opacity: 1; }
